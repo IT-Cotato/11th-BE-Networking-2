@@ -36,4 +36,43 @@ public class GlobalExceptionHandler {
 			.status(e.getErrorCode().getHttpStatus())
 			.body(errorResponse);
 	}
+
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e, HttpServletRequest request) {
+		log.error("EntityNotFoundException 발생: {}", e.getErrorCode().getMessage());
+		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
+		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode(), request);
+		return ResponseEntity
+			.status(e.getErrorCode().getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e, HttpServletRequest request) {
+		log.error("IllegalArgumentException 발생: {}", e.getMessage());
+		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.BAD_REQUEST, e.getMessage(), request);
+		return ResponseEntity
+			.status(HttpStatus.BAD_REQUEST)
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(ApplyArgumentException.class)
+	public ResponseEntity<ErrorResponse> handleApplyArgumentException(ApplyArgumentException e, HttpServletRequest request) {
+		log.error("ApplyArgumentException 발생: {}", e.getMessage());
+		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
+
+		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode(), e.getMessage(), request);
+		return ResponseEntity
+			.status(HttpStatus.BAD_REQUEST)
+			.body(errorResponse);
+	}
+
+
+
+//	private void logPrintTemplate(HttpServletRequest request) {
+//		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
+//	}
+//
+
 }
