@@ -1,3 +1,14 @@
 spring:
   application:
     name: networking2
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
