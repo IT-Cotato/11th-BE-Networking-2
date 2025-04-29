@@ -3,7 +3,7 @@ package cotato.backend.domain.example.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import cotato.backend.common.exception.EntityNotFoundException;
+import cotato.backend.domain.example.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.example.dao.ExampleRepository;
 import cotato.backend.domain.example.dto.response.ExampleResponse;
