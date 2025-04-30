@@ -1,4 +1,4 @@
-package cotato.backend.domain.example.entity;
+package cotato.backend.domain.applicant.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "example_entity")
+@Table(name = "applicant")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExampleEntity {
+public class Applicant {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class ExampleEntity {
 	private String name;
 
 	@Builder
-	public ExampleEntity(String name) {
+	public Applicant(String name) {
 		this.name = name;
 	}
 }
