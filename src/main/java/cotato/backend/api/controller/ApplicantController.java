@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import cotato.backend.domain.example.dto.response.PageResponse;
+import cotato.backend.domain.example.entity.Enum.SortCondition;
 import jakarta.validation.Valid;
 
 import cotato.backend.common.dto.DataResponse;
@@ -36,8 +40,9 @@ public class ApplicantController {
     }
 
     @GetMapping
-    public DataResponse<Page<ApplicantSimpleResponse>> findAll(Pageable pageable) {
-        return DataResponse.from(applicantService.findAll(pageable));
+    public DataResponse<PageResponse<ApplicantSimpleResponse>> findAll(Pageable pageable,
+        @RequestParam(defaultValue = "OLDEST") SortCondition sort) {
+        return DataResponse.from(applicantService.findAll(pageable, sort));
     }
 
     @GetMapping("/{id}")
