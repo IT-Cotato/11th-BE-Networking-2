@@ -4,9 +4,9 @@ import cotato.backend.domain.applicant.Applicant;
 import cotato.backend.domain.application.Application;
 import cotato.backend.domain.application.enums.Part;
 
-public record CreateApplicationRequest(Applicant applicant, int generation, Part part, int participation, int growth) {
+public record ApplicationDto(int generation, Part part, int participation, int growth) {
 
-    public Application toEntity() {
+    public Application toEntity(Applicant applicant) {
         return Application.builder()
                 .applicant(applicant)
                 .generation(generation)
