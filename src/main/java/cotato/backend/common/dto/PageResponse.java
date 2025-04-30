@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 
-import cotato.backend.domain.application.enums.SortType;
+import cotato.backend.domain.recruitment.enums.SortType;
 
 public record PageResponse<T>(
 	List<T> content,

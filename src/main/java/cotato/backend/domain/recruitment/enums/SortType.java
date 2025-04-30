@@ -1,4 +1,4 @@
-package cotato.backend.domain.application.enums;
+package cotato.backend.domain.recruitment.enums;
 
 import org.springframework.data.domain.Sort;
 

@@ -1,10 +1,10 @@
-package cotato.backend.domain.application.entity;
+package cotato.backend.domain.recruitment.entity;
 
 import java.time.LocalDateTime;
 
 import cotato.backend.common.exception.EntityValidationException;
 import cotato.backend.common.exception.ErrorCode;
-import cotato.backend.domain.application.enums.Part;
+import cotato.backend.domain.recruitment.enums.Part;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "application")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ApplicationEntity {
+public class SubmissionEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +57,7 @@ public class ApplicationEntity {
 	private Integer likeCount;
 
 	@Builder
-	public ApplicationEntity(
+	public SubmissionEntity(
 		String name,
 		Integer generation,
 		Integer age,

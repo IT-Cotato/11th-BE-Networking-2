@@ -1,4 +1,4 @@
-package cotato.backend.domain.application.application;
+package cotato.backend.domain.recruitment.application;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,20 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cotato.backend.common.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
-import cotato.backend.domain.application.api.dto.ApplicationLikeResult;
-import cotato.backend.domain.application.api.dto.ApplicationSummary;
-import cotato.backend.domain.application.dao.ApplicationRepository;
-import cotato.backend.domain.application.entity.ApplicationEntity;
-import cotato.backend.domain.application.enums.Part;
-import cotato.backend.domain.application.enums.SortType;
+import cotato.backend.domain.recruitment.api.dto.SubmissionLikeResult;
+import cotato.backend.domain.recruitment.api.dto.SubmissionSummary;
+import cotato.backend.domain.recruitment.dao.SubmissionRepository;
+import cotato.backend.domain.recruitment.entity.SubmissionEntity;
+import cotato.backend.domain.recruitment.enums.Part;
+import cotato.backend.domain.recruitment.enums.SortType;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class ApplicationService {
+public class RecruitmentService {
 
-	private final ApplicationRepository applicationRepository;
+	private final SubmissionRepository submissionRepository;
 
 	@Transactional
 	public Long apply(
@@ -33,7 +33,7 @@ public class ApplicationService {
 		Integer growthMotivation,
 		String phoneNumber
 	) {
-		ApplicationEntity applicationEntity = ApplicationEntity.builder()
+		SubmissionEntity submissionEntity = SubmissionEntity.builder()
 			.name(name)
 			.generation(generation)
 			.age(age)
@@ -43,28 +43,28 @@ public class ApplicationService {
 			.phoneNumber(phoneNumber)
 			.build();
 
-		ApplicationEntity savedEntity = applicationRepository.save(applicationEntity);
+		SubmissionEntity savedEntity = submissionRepository.save(submissionEntity);
 		return savedEntity.getId();
 	}
 
 	@Transactional
-	public ApplicationLikeResult addLike(Long applicationId) {
-		ApplicationEntity applicationEntity = applicationRepository.findById(applicationId)
+	public SubmissionLikeResult addLike(Long applicationId) {
+		SubmissionEntity submissionEntity = submissionRepository.findById(applicationId)
 			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.APPLICATION_NOT_FOUND));
 
-		applicationEntity.incrementLikeCount();
-		return ApplicationLikeResult.of(applicationEntity.getId(), applicationEntity.getLikeCount());
+		submissionEntity.incrementLikeCount();
+		return SubmissionLikeResult.of(submissionEntity.getId(), submissionEntity.getLikeCount());
 	}
 
-	public Page<ApplicationSummary> getApplications(
+	public Page<SubmissionSummary> getSubmissions(
 		int page,
 		int size,
 		SortType sortType
 	) {
 		Pageable pageable = PageRequest.of(page, size, sortType.toSort());
-		Page<ApplicationEntity> applicationEntityPage = applicationRepository.findAll(pageable);
+		Page<SubmissionEntity> applicationEntityPage = submissionRepository.findAll(pageable);
 
-		return applicationEntityPage.map(application -> ApplicationSummary.of(
+		return applicationEntityPage.map(application -> SubmissionSummary.of(
 			application.getId(),
 			application.getGeneration(),
 			application.getPart(),

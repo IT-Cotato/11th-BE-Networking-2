@@ -1,4 +1,4 @@
-package cotato.backend.domain.application.api.controller;
+package cotato.backend.domain.recruitment.api.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -14,26 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 import cotato.backend.common.dto.DataResponse;
 import cotato.backend.common.dto.DefaultIdResponse;
 import cotato.backend.common.dto.PageResponse;
-import cotato.backend.domain.application.api.dto.ApplicationSummary;
-import cotato.backend.domain.application.api.dto.request.ApplyRequest;
-import cotato.backend.domain.application.api.dto.ApplicationLikeResult;
-import cotato.backend.domain.application.api.dto.response.LikeResponse;
-import cotato.backend.domain.application.application.ApplicationService;
-import cotato.backend.domain.application.enums.SortType;
+import cotato.backend.domain.recruitment.api.dto.SubmissionSummary;
+import cotato.backend.domain.recruitment.api.dto.request.ApplyRequest;
+import cotato.backend.domain.recruitment.api.dto.SubmissionLikeResult;
+import cotato.backend.domain.recruitment.api.dto.response.LikeResponse;
+import cotato.backend.domain.recruitment.application.RecruitmentService;
+import cotato.backend.domain.recruitment.enums.SortType;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/applications")
-public class ApplicationController {
+@RequestMapping("/api/submissions")
+public class RecruitmentController {
 
-	private final ApplicationService applicationService;
+	private final RecruitmentService recruitmentService;
 
 	@PostMapping("")
 	public ResponseEntity<DataResponse<DefaultIdResponse>> apply(
 		@RequestBody ApplyRequest request
 	) {
-		Long applicationId = applicationService.apply(
+		Long submissionId = recruitmentService.apply(
 			request.name(),
 			request.generation(),
 			request.age(),
@@ -43,25 +43,27 @@ public class ApplicationController {
 			request.phoneNumber()
 		);
 
-		DefaultIdResponse response = DefaultIdResponse.of(applicationId);
+		DefaultIdResponse response = DefaultIdResponse.of(submissionId);
 		return ResponseEntity.ok(DataResponse.created(response));
 	}
 
-	@PatchMapping("/{applicationId}/like")
-	public ResponseEntity<DataResponse<LikeResponse>> addLike(@PathVariable Long applicationId) {
-		ApplicationLikeResult result = applicationService.addLike(applicationId);
+	@PatchMapping("/{submissionId}/like")
+	public ResponseEntity<DataResponse<LikeResponse>> addLike(@PathVariable Long submissionId) {
+		SubmissionLikeResult result = recruitmentService.addLike(submissionId);
 		LikeResponse response = LikeResponse.from(result);
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 
 	@GetMapping("")
-	public ResponseEntity<DataResponse<PageResponse<ApplicationSummary>>> getApplications(
+	public ResponseEntity<DataResponse<PageResponse<SubmissionSummary>>> getSubmissions(
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "10") int size,
 		@RequestParam(defaultValue = "OLD") SortType sortType
 	) {
-		Page<ApplicationSummary> summaryPage = applicationService.getApplications(page, size, sortType);
-		PageResponse<ApplicationSummary> response = PageResponse.of(summaryPage, sortType);
+		Page<SubmissionSummary> summaryPage = recruitmentService.getSubmissions(page, size, sortType);
+		PageResponse<SubmissionSummary> response = PageResponse.of(summaryPage, sortType);
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
+
+	@G
 }
