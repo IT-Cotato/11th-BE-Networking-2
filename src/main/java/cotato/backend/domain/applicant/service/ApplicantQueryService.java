@@ -5,7 +5,7 @@ import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.dto.response.ApplicantListResponse;
 import cotato.backend.domain.applicant.dto.response.ApplicantResponse;
 import cotato.backend.domain.applicant.entity.ApplicantEntity;
-import cotato.backend.domain.applicant.repository.ApplicantRepository;
+import cotato.backend.domain.applicant.dao.ApplicantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,9 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("applicantQueryService")
 @RequiredArgsConstructor
-public class ApplicantService {
+public class ApplicantQueryService {
 
     private final ApplicantRepository applicantRepository;
 

@@ -2,14 +2,18 @@ package cotato.backend.domain.applicant.application;
 
 import cotato.backend.common.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
+import cotato.backend.domain.applicant.ApplicantSortType;
 import cotato.backend.domain.applicant.dao.ApplicantRepository;
+import cotato.backend.domain.applicant.dto.response.ApplicantListResponse;
 import cotato.backend.domain.applicant.entity.ApplicantEntity;
 import cotato.backend.domain.applicant.dto.request.ApplicantRequest;
 import cotato.backend.domain.applicant.dto.response.ApplicantResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,4 +48,12 @@ public class ApplicantService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND));
         applicant.increaseLikes();
     }
+
+    public Page<ApplicantListResponse> getApplicants(ApplicantSortType sortType, Pageable pageable) {
+        Sort sort = sortType.toSort();
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        return applicantRepository.findAll(sortedPageable)
+                .map(ApplicantListResponse::from);
+    }
+
 }
