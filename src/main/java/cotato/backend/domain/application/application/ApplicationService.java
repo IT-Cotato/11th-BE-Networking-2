@@ -1,14 +1,19 @@
 package cotato.backend.domain.application.application;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cotato.backend.common.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.application.api.dto.ApplicationLikeResult;
+import cotato.backend.domain.application.api.dto.ApplicationSummary;
 import cotato.backend.domain.application.dao.ApplicationRepository;
 import cotato.backend.domain.application.entity.ApplicationEntity;
-import cotato.backend.domain.example.entity.Part;
+import cotato.backend.domain.application.enums.Part;
+import cotato.backend.domain.application.enums.SortType;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -49,5 +54,24 @@ public class ApplicationService {
 
 		applicationEntity.incrementLikeCount();
 		return ApplicationLikeResult.of(applicationEntity.getId(), applicationEntity.getLikeCount());
+	}
+
+	public Page<ApplicationSummary> getApplications(
+		int page,
+		int size,
+		SortType sortType
+	) {
+		Pageable pageable = PageRequest.of(page, size, sortType.toSort());
+		Page<ApplicationEntity> applicationEntityPage = applicationRepository.findAll(pageable);
+
+		return applicationEntityPage.map(application -> ApplicationSummary.of(
+			application.getId(),
+			application.getGeneration(),
+			application.getPart(),
+			application.getParticipationScore(),
+			application.getGrowthMotivation(),
+			application.getLikeCount(),
+			application.getSubmissionTime()
+		));
 	}
 }
