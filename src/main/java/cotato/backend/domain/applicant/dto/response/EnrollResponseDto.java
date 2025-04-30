@@ -2,12 +2,12 @@ package cotato.backend.domain.applicant.dto.response;
 
 import cotato.backend.domain.applicant.entity.Applicant;
 
-public record ApplicantResponse(
+public record EnrollResponseDto(
 	Long id,
 	String name
 ) {
-	public static ApplicantResponse from(Applicant applicant) {
-		return new ApplicantResponse(
+	public static EnrollResponseDto from(Applicant applicant) {
+		return new EnrollResponseDto(
 			applicant.getId(),
 			applicant.getName()
 		);
