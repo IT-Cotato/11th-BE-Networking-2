@@ -5,7 +5,9 @@ import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.example.dao.ApplyLikeRepository;
 import cotato.backend.domain.example.dao.ApplyRepository;
 import cotato.backend.domain.example.dao.ManagerRepository;
+import cotato.backend.domain.example.dto.info.ApplyLikeInfo;
 import cotato.backend.domain.example.dto.response.ApplyDetailResponse;
+import cotato.backend.domain.example.dto.response.ApplyListResponse;
 import cotato.backend.domain.example.entity.Apply;
 import cotato.backend.domain.example.entity.ApplyLike;
 import cotato.backend.domain.example.entity.Manager;
@@ -51,6 +53,13 @@ public class ApplyService {
         return applyRepository.findAll(pageable);
     }
 
+    public List<ApplyListResponse> findApplyLists(List<Long> applyIds) {
+        return applyRepository.findAllById(applyIds)
+                .stream()
+                .map(ApplyListResponse::from)
+                .toList();
+    }
+
     @Transactional
     public void likeApply(Long applyId, Long mangerId) {
         Apply apply = applyRepository.findById(applyId)
@@ -77,5 +86,9 @@ public class ApplyService {
                 applyLike.getManager().getManagerId()
         );
 
+    }
+
+    public List<ApplyLikeInfo> findApplyListsOrderByLike(int page, int size) {
+        return applyLikeRepository.findApplyListsByOrderByLikeCountDesc(page, size);
     }
 }

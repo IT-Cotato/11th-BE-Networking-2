@@ -4,6 +4,7 @@ import cotato.backend.common.dto.DataResponse;
 import cotato.backend.common.dto.PageResponse;
 import cotato.backend.common.util.SortUtil;
 import cotato.backend.domain.example.application.ApplyService;
+import cotato.backend.domain.example.dto.info.ApplyLikeInfo;
 import cotato.backend.domain.example.dto.request.ApplyCreateRequest;
 import cotato.backend.domain.example.dto.response.ApplyDetailResponse;
 import cotato.backend.domain.example.dto.response.ApplyListResponse;
@@ -16,7 +17,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,7 +46,7 @@ public class ApplyController {
         
     }
 
-    //페이지네이션 기본정렬기준 createdAt
+    //페이지네이션
     @GetMapping("/apply/lists")
     public DataResponse<List<ApplyListResponse>> getApplyList(@RequestParam(value = "page", defaultValue = "0") int page,
                                @RequestParam(value = "size", defaultValue = "10") int size,
@@ -49,6 +54,7 @@ public class ApplyController {
                                @RequestParam(value = "direction", defaultValue = "desc") List<String> direction) {
 
         Sort sortObj = SortUtil.getSort(sort, direction);
+
         Pageable pageable = PageRequest.of(page, size, sortObj);
 
         Page<Apply> applyList = applyService.findApplyLists(pageable);
@@ -57,6 +63,51 @@ public class ApplyController {
         PageResponse pageResponse = PageResponse.from(applyList);
 
         return DataResponse.from(applyListResponses, pageResponse);
+    }
+
+    @GetMapping("/apply/lists/orderByLike")
+    public DataResponse<List<ApplyListResponse>> getApplyListOrderByLike(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size, Sort sort) {
+
+        //좋아요 역순, 지원서류 역순
+        Sort sortObj = Sort.by("likeCount").descending();
+        sortObj.and(Sort.by("applyTime").descending());
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+
+        //size + 10개 applyLikeInfo가져오기
+        int tempSize = size+10;
+        List<ApplyLikeInfo> applyList = applyService.findApplyListsOrderByLike(page, tempSize);
+
+        //applyId만 가져오기
+        List<Long> applyIds = applyList.stream()
+                .map(ApplyLikeInfo::getApplyId)
+                .toList();
+
+        //applyId로 size + 10개 지원서류 가져오기
+        List<ApplyListResponse> applyListResponses = new ArrayList<>(applyService.findApplyLists(applyIds));
+
+        //좋아요 개수 map에 저장
+        Map<Long, Long> applyIdToLikeCountMap = applyList.stream()
+                .collect(Collectors.toMap(ApplyLikeInfo::getApplyId, ApplyLikeInfo::getLikeCount));
+        
+        //좋아요 개수 설정
+        applyListResponses.forEach(response -> {
+            Long likeCount = applyIdToLikeCountMap.get(response.getApplyId());
+            response.setLikeCount(likeCount);
+        });
+
+
+        //likecount 내림차순, applytime 내림차순
+        applyListResponses.sort(Comparator
+                .comparing(ApplyListResponse::getLikeCount, Comparator.nullsLast(Comparator.reverseOrder()))
+                .thenComparing(ApplyListResponse::getApplyTime, Comparator.nullsLast(Comparator.reverseOrder())));
+
+
+        //size + 10개에서 size개수만큼 자르기 sublist
+        List<ApplyListResponse> subList = applyListResponses.subList(0, Math.min(size, applyListResponses.size()));
+
+        return DataResponse.from(applyListResponses);
     }
 
     @PostMapping("/apply/{id}/like")

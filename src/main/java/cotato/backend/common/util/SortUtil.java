@@ -19,9 +19,6 @@ public class SortUtil {
             sortObj = sortObj.and(Sort.by(order));
         }
 
-        //위 코드 stream과 람다로
-
-
         return sortObj;
     }
 }
