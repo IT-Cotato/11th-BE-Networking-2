@@ -18,6 +18,8 @@ public enum FailureDetail {
     INVALID_GROWTH_DESIRE(HttpStatus.BAD_REQUEST,
             String.format("성장 의지는 %d 이상 %d 이하이어야 합니다.", GrowthDesire.LOWER_BOUND, GrowthDesire.UPPER_BOUND)),
     INVALID_PHONE_NUMER(HttpStatus.BAD_REQUEST, "올바르지 않은 휴대폰 번호입니다."),
+    INVALID_SORT_OPTION(HttpStatus.BAD_REQUEST,
+            "정렬 기준은 OLDEST, LATEST, MOST_LIKE, HIGHEST_ENGAGEMENT, HIGHEST_GROWTH_DESIRE 중 하나이어야 합니다."),
 
     NOT_FOUND_FORM(HttpStatus.NOT_FOUND, "존재하지 않는 지원자 서류입니다."),
     NOT_FOUND_ADMIN(HttpStatus.NOT_FOUND, "존재하지 않는 관리자입니다."),
