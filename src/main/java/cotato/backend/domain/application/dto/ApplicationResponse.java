@@ -25,7 +25,7 @@ public record ApplicationResponse(
                 application.getPart(),
                 application.getParticipation(),
                 application.getGrowth(),
-                application.getLike(),
+                application.getLikeCount(),
                 application.getApplicant().getPhoneNumber(),
                 application.getSubmittedAt()
         );

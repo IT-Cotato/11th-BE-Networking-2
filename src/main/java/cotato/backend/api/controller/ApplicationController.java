@@ -7,6 +7,7 @@ import cotato.backend.domain.application.dto.ApplicationDto;
 import cotato.backend.domain.application.dto.ApplicationPagedResponse;
 import cotato.backend.domain.application.dto.ApplicationResponse;
 import cotato.backend.domain.application.dto.CreateApplicationRequestDto;
+import cotato.backend.domain.like.LikeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class ApplicationController {
 
 	private final ApplicationService applicationService;
+    private final LikeService likeService;
 
 	@PostMapping
 	public ResponseEntity<SuccessResponse<Long>> save(@RequestBody CreateApplicationRequestDto req) {
@@ -44,9 +46,10 @@ public class ApplicationController {
     }
 
 
-    @PostMapping("/{id}/like")
-    public ResponseEntity<SuccessResponse<Integer>> addLike(@PathVariable("id") Long applicationId) {
-        int likeCount = applicationService.addLike(applicationId);
+    @PostMapping("/{applicationId}/like")
+    public ResponseEntity<SuccessResponse<Integer>> addLike(@PathVariable("applicationId") Long applicationId, @RequestParam("adminId") Long adminId) {
+        likeService.addLike(adminId, applicationId);
+        int likeCount = applicationService.getApplicationById(applicationId).like();
         return ResponseEntity.ok(new SuccessResponse<>(200,"지원서 좋아요 성공", likeCount));
     }
 

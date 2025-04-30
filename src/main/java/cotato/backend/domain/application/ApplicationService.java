@@ -10,7 +10,7 @@ public interface ApplicationService {
 
     public ApplicationResponse getApplicationById(Long applicationId);
 
-    public int addLike(Long applicationId);
+    public int getLikeCount(Long applicationId);
 
     ApplicationPagedResponse getApplications(int page, int size, String sortBy);
 }

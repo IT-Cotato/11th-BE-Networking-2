@@ -46,10 +46,10 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     @Transactional
-    public int addLike(Long applicationId) {
+    public int getLikeCount(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationNotFoundException());
-        return application.addLike();
+        return application.getLikeCount();
     }
 
     public ApplicationPagedResponse getApplications(int page, int size, String sortBy) {
@@ -85,7 +85,7 @@ public class ApplicationServiceImpl implements ApplicationService{
                         app.getPart(),
                         app.getParticipation(),
                         app.getGrowth(),
-                        app.getLike(),
+                        app.getLikeCount(),
                         app.getSubmittedAt()
                 )).toList();
 

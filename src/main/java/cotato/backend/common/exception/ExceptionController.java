@@ -24,6 +24,29 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    @ExceptionHandler(AdminNotFoundException.class)
+    public ResponseEntity<ErrorResponse> adminNotFoundExceptionHandler(AdminNotFoundException e) {
+        log.error("AdminNotFoundException: {}", e.getMessage());
+        ErrorResponse response = ErrorResponse.of(
+                HttpStatus.NOT_FOUND.value(),
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(LikeAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> likeAlreadyExistsExceptionHandler(LikeAlreadyExistsException e) {
+        log.error("LikeAlreadyExistsException: {}", e.getMessage());
+        ErrorResponse response = ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+
     @ExceptionHandler(InvalidSortOptionException.class)
     public ResponseEntity<ErrorResponse> invalidSortOptionExceptionHandler(InvalidSortOptionException e) {
         log.error("InvalidSortOptionException: {}", e.getMessage());

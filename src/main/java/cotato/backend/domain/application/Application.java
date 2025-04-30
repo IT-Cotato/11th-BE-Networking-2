@@ -5,10 +5,13 @@ import cotato.backend.common.exception.InvalidGrowthException;
 import cotato.backend.common.exception.InvalidParticipationException;
 import cotato.backend.domain.applicant.Applicant;
 import cotato.backend.domain.application.enums.Part;
+import cotato.backend.domain.like.Like;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,11 +39,11 @@ public class Application {
     @Column(name = "application_growth")
     private int growth;
 
-    @Column(name = "application_like")
-    private int like;
-
     @Column(name = "application_submittedAt")
     private LocalDateTime submittedAt;
+
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
     @Builder
     public Application(Applicant applicant, int generation, Part part, int participation, int growth) {
@@ -53,7 +56,6 @@ public class Application {
         this.part = part;
         this.participation = participation;
         this.growth = growth;
-        this.like = 0;
         this.submittedAt = LocalDateTime.now();
     }
 
@@ -76,7 +78,7 @@ public class Application {
     }
 
 
-    public int addLike() {
-        return this.like += 1;
+    public int getLikeCount() {
+        return likes.size();
     }
 }
