@@ -4,13 +4,14 @@ import static org.springframework.http.HttpStatus.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cotato.backend.api.applicant.dto.response.ApplicantGetResponse;
 import cotato.backend.api.applicant.dto.request.ApplicantRequest;
+import cotato.backend.api.applicant.dto.response.ApplicantGetResponse;
 import cotato.backend.api.applicant.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.ApiResponse;
 import cotato.backend.domain.applicant.application.ApplicantService;
@@ -35,10 +36,10 @@ public class ApplicantController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponse<ApplicantGetResponse>> get(@RequestBody @Valid ApplicantRequest request) {
-		return ResponseEntity.status(OK).body(
+	public ResponseEntity<ApiResponse<ApplicantGetResponse>> get(@PathVariable Long id) {
+		return ResponseEntity.ok(
 			ApiResponse.ok(
-				DefaultIdResponse.of(applicantService.get(request.toGetApplicant()))
+				applicantService.getApplicant(id)
 			)
 		);
 	}

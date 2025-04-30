@@ -3,6 +3,9 @@ package cotato.backend.domain.applicant.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import cotato.backend.api.applicant.dto.response.ApplicantGetResponse;
+import cotato.backend.common.exception.EntityNotFoundException;
+import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.application.port.ApplicantRepository;
 import cotato.backend.domain.applicant.domain.Applicant;
 import cotato.backend.domain.applicant.dto.CreateApplicant;
@@ -15,9 +18,19 @@ import lombok.RequiredArgsConstructor;
 public class ApplicantService {
 
 	private final ApplicantRepository applicantRepository;
+	private final ApplicantLikeService applicantLikeService;
 
 	@Transactional
 	public Long save(CreateApplicant createApplicant) {
 		return applicantRepository.save(Applicant.createNew(createApplicant));
+	}
+
+	public ApplicantGetResponse getApplicant(Long id) {
+		Applicant applicant = applicantRepository.findById(id)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.APPLICANT_NOT_FOUND_EXCEPTION));
+
+		Long likes = applicantLikeService.getLikes(id);
+
+		return ApplicantGetResponse.of(applicant, likes);
 	}
 }

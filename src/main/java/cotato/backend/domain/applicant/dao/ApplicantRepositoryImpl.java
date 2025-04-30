@@ -1,5 +1,7 @@
 package cotato.backend.domain.applicant.dao;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import cotato.backend.domain.applicant.application.port.ApplicantRepository;
@@ -17,5 +19,11 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
 	@Override
 	public Long save(Applicant applicant) {
 		return applicantJpaRepository.save(ApplicantEntity.fromDomain(applicant)).getId();
+	}
+
+	@Override
+	public Optional<Applicant> findById(Long id) {
+		return applicantJpaRepository.findById(id)
+			.map(ApplicantEntity::toDomain);
 	}
 }
