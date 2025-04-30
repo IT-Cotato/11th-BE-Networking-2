@@ -4,6 +4,7 @@ import cotato.backend.common.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.example.dao.ApplicantRepository;
 import cotato.backend.domain.example.dto.request.ApplicantRequest;
+import cotato.backend.domain.example.dto.response.ApplicantResponse;
 import cotato.backend.domain.example.entity.Applicant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,14 @@ public class ApplicantService {
                 .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND));
 
         applicant.increaseLike();
+    }
+
+    @Transactional
+    public ApplicantResponse getDocumentDetail(Long id) {
+
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException(ErrorCode.NOT_FOUND));
+
+        return ApplicantResponse.from(id, applicant);
     }
 }

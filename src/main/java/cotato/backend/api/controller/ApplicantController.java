@@ -4,7 +4,7 @@ import cotato.backend.api.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.example.application.ApplicantService;
 import cotato.backend.domain.example.dto.request.ApplicantRequest;
-import lombok.Data;
+import cotato.backend.domain.example.dto.response.ApplicantResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +18,7 @@ public class ApplicantController {
 
     @PostMapping
     public ResponseEntity<DataResponse<DefaultIdResponse>> save(@RequestBody ApplicantRequest request) {
+
         return ResponseEntity.ok(
                 DataResponse.created(
                         DefaultIdResponse.of(applicantService.save(request))
@@ -30,6 +31,14 @@ public class ApplicantController {
 
         applicantService.increaseLike(id);
         return ResponseEntity.ok(DataResponse.ok());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DataResponse<ApplicantResponse>> documentDetail(@PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                DataResponse.from(applicantService.getDocumentDetail(id))
+        );
     }
 
 }
