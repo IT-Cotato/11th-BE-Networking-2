@@ -1,7 +1,10 @@
 package cotato.backend.domain.applicant.dao;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import cotato.backend.domain.applicant.application.port.ApplicantRepository;
@@ -25,5 +28,24 @@ public class ApplicantRepositoryImpl implements ApplicantRepository {
 	public Optional<Applicant> findById(Long id) {
 		return applicantJpaRepository.findById(id)
 			.map(ApplicantEntity::toDomain);
+	}
+
+	@Override
+	public Page<Applicant> findAll(Pageable pageable) {
+		return applicantJpaRepository.findAll(pageable)
+			.map(ApplicantEntity::toDomain);
+	}
+
+	@Override
+	public List<Applicant> findByIdIn(List<Long> mostLikedIds) {
+		return applicantJpaRepository.findByIdIn(mostLikedIds)
+			.stream()
+			.map(ApplicantEntity::toDomain)
+			.toList();
+	}
+
+	@Override
+	public Long count() {
+		return applicantJpaRepository.count();
 	}
 }
