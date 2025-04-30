@@ -37,4 +37,10 @@ public class ApplicantController {
 		SearchDetailsResponseDto response = queryService.findById(id);
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
+
+	@PostMapping("/{id}/like")
+	public ResponseEntity<DataResponse<Void>> like(@PathVariable("id") Long id) {
+		commandService.increaseLikes(id);
+		return ResponseEntity.ok(DataResponse.ok());
+	}
 }
