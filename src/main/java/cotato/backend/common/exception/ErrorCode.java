@@ -16,7 +16,9 @@ public enum ErrorCode {
 
 	//500
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-004"),
-	;
+
+	// Custom
+	CAN_NOT_FOUND_APPLICATION(HttpStatus.NOT_FOUND, "지원자를 찾을 수 없습니다.", "APPLICANT-404");
 
 	private final HttpStatus httpStatus;
 	private final String message;
