@@ -31,4 +31,25 @@ public class ErrorResponse extends BaseResponse {
 			errorCode.getHttpStatus()
 		);
 	}
+
+	public static ErrorResponse of(String customMessage, HttpServletRequest request) {
+		return new ErrorResponse(
+				ErrorCode.INVALID_INPUT_VALUE.getCode(),
+				customMessage,
+				request.getMethod(),
+				request.getRequestURI(),
+				ErrorCode.INVALID_INPUT_VALUE.getHttpStatus()
+		);
+	}
+
+	public static ErrorResponse of(ErrorCode errorCode, String customMessage, HttpServletRequest request) {
+		return new ErrorResponse(
+				errorCode.getCode(),
+				customMessage,
+				request.getMethod(),
+				request.getRequestURI(),
+				errorCode.getHttpStatus()
+		);
+	}
+
 }

@@ -39,8 +39,10 @@ public class Apply {
     @CreationTimestamp
     private LocalDateTime submitTime;
 
+    private int likeCount = 0;
+
     @Builder
-    public Apply(String name, int generation, int age, PartType part, int participationScore, int growthScore, String phoneNumber, LocalDateTime submitTime) {
+    public Apply(String name, int generation, int age, PartType part, int participationScore, int growthScore, String phoneNumber, LocalDateTime submitTime, int likeCount) {
         this.name = name;
         this.generation = generation;
         this.age = age;
@@ -49,5 +51,10 @@ public class Apply {
         this.growthScore = growthScore;
         this.phoneNumber = phoneNumber;
         this.submitTime = submitTime;
+        this.likeCount = likeCount;
+    }
+
+    public void addLike() {
+        this.likeCount += 1;
     }
 }

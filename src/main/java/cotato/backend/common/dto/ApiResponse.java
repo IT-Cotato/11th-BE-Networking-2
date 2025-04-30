@@ -1,9 +1,9 @@
-package cotato.backend.api.dto.response;
+package cotato.backend.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import cotato.backend.api.status.SuccessStatus;
+import cotato.backend.common.exception.SuccessCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -22,7 +22,7 @@ public class ApiResponse<T> {
     private T result;
 
     public static <T> ApiResponse<T> onSuccess(T result){
-        return new ApiResponse<>(true, SuccessStatus._OK.getCode() , SuccessStatus._OK.getMessage(), result);
+        return new ApiResponse<>(true, SuccessCode._OK.getCode() , SuccessCode._OK.getMessage(), result);
     }
 
     public static <T> ApiResponse<T> onFailure(String code, String message, T data){

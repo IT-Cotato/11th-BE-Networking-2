@@ -2,12 +2,16 @@ package cotato.backend.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import cotato.backend.common.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
@@ -35,5 +39,25 @@ public class GlobalExceptionHandler {
 		return ResponseEntity
 			.status(e.getErrorCode().getHttpStatus())
 			.body(errorResponse);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ErrorResponse> handleValidationException(
+			MethodArgumentNotValidException ex, HttpServletRequest request) {
+
+		String combinedMessages = ex.getBindingResult().getFieldErrors().stream()
+				.map(error -> String.format("[%s] %s", error.getField(), error.getDefaultMessage()))
+				.collect(Collectors.joining(", "));
+
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(ErrorResponse.of(combinedMessages, request));
+	}
+
+	@ExceptionHandler({IllegalArgumentException.class, HttpMessageNotReadableException.class})
+	public ResponseEntity<ErrorResponse> handleBadRequest(Exception ex, HttpServletRequest request) {
+		return ResponseEntity
+				.status(HttpStatus.BAD_REQUEST)
+				.body(ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE, ex.getMessage(), request));
 	}
 }

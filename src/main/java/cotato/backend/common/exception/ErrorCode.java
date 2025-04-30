@@ -14,11 +14,19 @@ public enum ErrorCode {
 	INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "요청 파라미터가 잘못되었습니다.", "COMMON-002"),
 	NOT_FOUND(HttpStatus.NOT_FOUND, "찾을 수 없습니다.", "COMMON-003"),
 
+	ALREADY_EXIST_APPLICANT(HttpStatus.BAD_REQUEST, "이미 지원한 지원자입니다.", "APPLY400"),
+	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "입력값이 유효하지 않습니다.", "INPUT400"),
+
+	//404
+	NOT_FOUND_APPLY(HttpStatus.NOT_FOUND, "지원서를 찾을 수 없습니다.", "APPLY404"),
+
 	//500
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부에서 에러가 발생하였습니다.", "COMMON-004"),
 	;
 
+
 	private final HttpStatus httpStatus;
 	private final String message;
 	private final String code;
+
 }

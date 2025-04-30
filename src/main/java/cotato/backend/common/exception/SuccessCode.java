@@ -1,4 +1,4 @@
-package cotato.backend.api.status;
+package cotato.backend.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum SuccessStatus  {
+public enum SuccessCode  {
 
     // 성공 응답
     _OK(HttpStatus.OK, "COMMON200", "성공입니다.");
