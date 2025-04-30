@@ -1,34 +1,15 @@
 package cotato.backend.common.dto;
 
-import org.springframework.http.HttpStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import cotato.backend.common.exception.ErrorCode;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.Getter;
+import java.time.LocalDateTime;
 
-@Getter
-public class ErrorResponse extends BaseResponse {
-
-	private final String code;
-	private final String message;
-	private final String method;
-	private final String requestURI;
-
-	private ErrorResponse(String code, String message, String method, String requestURI, HttpStatus httpStatus) {
-		super(httpStatus);
-		this.code = code;
-		this.message = message;
-		this.method = method;
-		this.requestURI = requestURI;
-	}
-
-	public static ErrorResponse of(ErrorCode errorCode, HttpServletRequest request) {
-		return new ErrorResponse(
-			errorCode.getCode(),
-			errorCode.getMessage(),
-			request.getMethod(),
-			request.getRequestURI(),
-			errorCode.getHttpStatus()
-		);
-	}
+public record ErrorResponse(
+        int status,
+        String message,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+        LocalDateTime timeStamp) {
+    public static ErrorResponse of(int status, String message, LocalDateTime timestamp) {
+        return new ErrorResponse(status, message, timestamp);
+    }
 }

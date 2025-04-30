@@ -1,5 +1,8 @@
 package cotato.backend.domain.application;
 
+import cotato.backend.common.exception.InvalidGenerationException;
+import cotato.backend.common.exception.InvalidGrowthException;
+import cotato.backend.common.exception.InvalidParticipationException;
 import cotato.backend.domain.applicant.Applicant;
 import cotato.backend.domain.application.enums.Part;
 import jakarta.persistence.*;
@@ -56,19 +59,19 @@ public class Application {
 
     private void validateGeneration(int generation) {
         if (generation < 1) {
-            throw new IllegalArgumentException("지원 기수는 1 이상이어야 합니다.");
+            throw new InvalidGenerationException();
         }
     }
 
     private void validateParticipation(int participation) {
         if (participation < 0 || participation > 10) {
-            throw new IllegalArgumentException("참여 적극성은 0~10 사이여야 합니다.");
+            throw new InvalidParticipationException();
         }
     }
 
     private void validateGrowth(int growth) {
         if (growth < 0 || growth > 10) {
-            throw new IllegalArgumentException("성장 의지는 0~10 사이여야 합니다.");
+            throw new InvalidGrowthException();
         }
     }
 

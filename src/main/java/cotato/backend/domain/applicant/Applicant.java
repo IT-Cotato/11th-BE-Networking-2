@@ -1,5 +1,8 @@
 package cotato.backend.domain.applicant;
 
+import cotato.backend.common.exception.InvalidApplicantAgeException;
+import cotato.backend.common.exception.InvalidApplicantNameException;
+import cotato.backend.common.exception.InvalidApplicantPhoneNumberException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,19 +38,19 @@ public class Applicant {
 
     private void validateName(String name) {
         if (name == null || name.length() < 2 || name.length() > 10) {
-            throw new IllegalArgumentException("이름은 2~10자여야 합니다.");
+            throw new InvalidApplicantNameException();
         }
     }
 
     private void validateAge(int age) {
         if (age < 22 || age > 30) {
-            throw new IllegalArgumentException("나이는 22~30세여야 합니다.");
+            throw new InvalidApplicantAgeException();
         }
     }
 
     private void validatePhoneNumber(String phoneNumber) {
         if (phoneNumber == null || !phoneNumber.startsWith("010") || phoneNumber.length() != 11) {
-            throw new IllegalArgumentException("휴대폰 번호는 010으로 시작하는 11자리여야 합니다.");
+            throw new InvalidApplicantPhoneNumberException();
         }
     }
 

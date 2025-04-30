@@ -1,5 +1,7 @@
 package cotato.backend.domain.application;
 
+import cotato.backend.common.exception.ApplicationNotFoundException;
+import cotato.backend.common.exception.InvalidSortOptionException;
 import cotato.backend.domain.applicant.Applicant;
 import cotato.backend.domain.applicant.ApplicantService;
 import cotato.backend.domain.applicant.dto.ApplicantDto;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -29,7 +32,6 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Transactional
     public Long save(ApplicantDto applicantRequest, ApplicationDto applicationRequest) {
         Applicant applicant = applicantService.save(applicantRequest);
-
         Application application = applicationRequest.toEntity(applicant);
         return applicationRepository.save(application).getId();
     }
@@ -38,9 +40,7 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Transactional
     public ApplicationResponse getApplicationById(Long applicationId)  {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new IllegalArgumentException("지원서를 찾을 수 없습니다."));
-
-
+                .orElseThrow(() -> new ApplicationNotFoundException());
         return ApplicationResponse.from(application);
     }
 
@@ -48,11 +48,14 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Transactional
     public int addLike(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new IllegalArgumentException("지원서를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ApplicationNotFoundException());
         return application.addLike();
     }
 
     public ApplicationPagedResponse getApplications(int page, int size, String sortBy) {
+        if (!Set.of("submittedAt", "submittedAt_desc", "like", "participation", "growth").contains(sortBy)) {
+            throw new InvalidSortOptionException();
+        }
         Sort sort = switch (sortBy) {
             // 지원 시간 오래된 순
             case "submittedAt" -> Sort.by(Sort.Direction.ASC, "submittedAt");
