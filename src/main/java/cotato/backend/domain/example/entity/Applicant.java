@@ -2,6 +2,7 @@ package cotato.backend.domain.example.entity;
 
 import java.time.LocalDateTime;
 
+import cotato.backend.domain.example.entity.Enum.Part;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
