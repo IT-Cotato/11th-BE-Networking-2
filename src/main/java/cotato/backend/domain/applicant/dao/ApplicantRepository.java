@@ -1,4 +1,7 @@
 package cotato.backend.domain.applicant.dao;
 
-public interface ApplicantRepository {
+import cotato.backend.domain.applicant.entity.ApplicantEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ApplicantRepository extends JpaRepository<ApplicantEntity, Long> {
 }
