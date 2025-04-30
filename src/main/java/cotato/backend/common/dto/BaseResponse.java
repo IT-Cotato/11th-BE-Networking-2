@@ -1,22 +1,17 @@
 package cotato.backend.common.dto;
 
-import java.time.LocalDateTime;
-
-import org.springframework.http.HttpStatus;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.http.HttpStatusCode;
 
 import lombok.Getter;
 
 @Getter
 public abstract class BaseResponse {
 
-	private final String status;
+	private final Boolean isSuccess;
+	private final int status;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	private final LocalDateTime timestamp = LocalDateTime.now();
-
-	protected BaseResponse(HttpStatus status) {
-		this.status = status.getReasonPhrase();
+	protected BaseResponse(boolean isSuccess, HttpStatusCode status) {
+		this.isSuccess = isSuccess;
+		this.status = status.value();
 	}
 }
