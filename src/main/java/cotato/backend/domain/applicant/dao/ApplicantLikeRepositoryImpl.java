@@ -1,5 +1,7 @@
 package cotato.backend.domain.applicant.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import cotato.backend.domain.applicant.application.port.ApplicantLikeRepository;
@@ -22,5 +24,10 @@ public class ApplicantLikeRepositoryImpl implements ApplicantLikeRepository {
 	@Override
 	public Long save(ApplicantLike applicantLike) {
 		return applicantLikeJpaRepository.save(ApplicantLikeEntity.fromDomain(applicantLike)).getId();
+	}
+
+	@Override
+	public Page<Long> countMostLikedApplicantIds(Pageable pageable) {
+		return applicantLikeJpaRepository.countMostLikedApplicantIds(pageable);
 	}
 }
