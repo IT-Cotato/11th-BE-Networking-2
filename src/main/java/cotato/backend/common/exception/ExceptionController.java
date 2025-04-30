@@ -53,6 +53,17 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(AdminAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> adminAlreadyExistsExceptionHandler(AdminAlreadyExistsException e) {
+        log.error("AdminAlreadyExistsException: {}", e.getMessage());
+        ErrorResponse response = ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                e.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception e) {
         log.error("System Error: ", e);
