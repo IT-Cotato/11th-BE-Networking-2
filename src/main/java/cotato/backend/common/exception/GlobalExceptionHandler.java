@@ -2,6 +2,7 @@ package cotato.backend.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -40,6 +41,24 @@ public class GlobalExceptionHandler {
 		ErrorResponse errorResponse = ErrorResponse.of(e.getErrorCode(), request);
 		return ResponseEntity
 			.status(e.getErrorCode().getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request) {
+		log.error("HttpMessageNotReadableException 발생: {}", e.getMessage());
+		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
+
+		ErrorCode errorCode = ErrorCode.BAD_REQUEST;
+
+		// Part enum 관련 오류 처리
+		if(e.getMessage().contains("cotato.backend.domain.example.entity.Part")) {
+			errorCode = ErrorCode.INVALID_PART_VALUE;
+		}
+
+		ErrorResponse errorResponse = ErrorResponse.of(errorCode, request);
+		return ResponseEntity
+			.status(errorCode.getHttpStatus())
 			.body(errorResponse);
 	}
 }
