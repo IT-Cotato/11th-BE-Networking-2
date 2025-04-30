@@ -2,6 +2,7 @@ package cotato.backend.exception;
 
 import cotato.backend.common.ApiResponse;
 import cotato.backend.common.BaseResponse;
+import cotato.backend.exception.invalidInfo.InvalidInfoException;
 import cotato.backend.exception.notFoundInfo.NotFoundInfoException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +10,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(InvalidInfoException.class)
+    public ResponseEntity<BaseResponse<?>> handleInvalidInfoException(InvalidInfoException e) {
+        return ApiResponse.failure(e.failureDetail);
+    }
+
     @ExceptionHandler(NotFoundInfoException.class)
     public ResponseEntity<BaseResponse<?>> handleNotFoundInfoException(NotFoundInfoException e) {
         return ApiResponse.failure(e.failureDetail);
