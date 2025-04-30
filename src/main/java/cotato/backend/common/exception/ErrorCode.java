@@ -14,6 +14,7 @@ public enum ErrorCode {
 
 	// Applicant
 	APPLICANT_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "A-001", "해당 지원자를 찾을 수 없습니다."),
+	INVALID_SORT_TYPE_EXCEPTION(HttpStatus.BAD_REQUEST, "A-002", "정렬 타입이 잘못되었습니다."),
 
 	// Server
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "서버 내부에서 에러가 발생하였습니다."),
