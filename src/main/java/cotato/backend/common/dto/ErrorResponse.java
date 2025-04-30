@@ -6,6 +6,13 @@ import cotato.backend.common.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 
+/**
+ * 에러 응답 클래스
+ * 예외 발생 시 GlobalExceptionHandler에서 처리됨
+ * GlobalExceptionHandler에서  ErrorResponse.of(errorCode, request)를 호출해서 에러 응답 생성
+ * 생성된 응답은 클라이언트에게 HTTP 코드와 함께 전달됨
+ */
+
 @Getter
 public class ErrorResponse extends BaseResponse {
 

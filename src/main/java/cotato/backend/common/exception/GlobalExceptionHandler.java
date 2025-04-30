@@ -9,6 +9,12 @@ import cotato.backend.common.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 애플리케이션 전체에서 발생하는 예외를 처리
+ * 각 예외 타입별로 @ExceptionHandler 구현
+ * 애플리케이션 어디서든 예외가 발생하면 적절한 핸들러 메서드로 라우팅 됨
+ */
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {

@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;
 
+/**
+ * 성공 응답 클래스
+ * HTTP 상태 코드와 함께 데이터를 포함한 응답 생성
+ */
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DataResponse<T> extends BaseResponse {
