@@ -1,8 +1,7 @@
 package cotato.backend.domain.applicant.dto.response;
 
-import java.time.LocalDateTime;
-
 import cotato.backend.domain.applicant.entity.Applicant;
+import cotato.backend.domain.utils.DataTimeUtils;
 
 public record ApplicantResponseDto(
 	Long id,
@@ -11,7 +10,7 @@ public record ApplicantResponseDto(
 	int activity,
 	int growth,
 	int likes,
-	LocalDateTime submissionTime
+	String submissionTime
 ) {
 	public static ApplicantResponseDto from(Applicant applicant) {
 		return new ApplicantResponseDto(
@@ -21,7 +20,7 @@ public record ApplicantResponseDto(
 			applicant.getActivity(),
 			applicant.getGrowth(),
 			applicant.getLikes(),
-			applicant.getCreatedAt()
+			DataTimeUtils.format(applicant.getCreatedAt())
 		);
 	}
 }
