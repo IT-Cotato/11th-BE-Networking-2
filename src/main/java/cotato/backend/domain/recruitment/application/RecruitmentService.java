@@ -8,8 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cotato.backend.common.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
-import cotato.backend.domain.recruitment.api.dto.SubmissionLikeResult;
 import cotato.backend.domain.recruitment.api.dto.SubmissionSummary;
+import cotato.backend.domain.recruitment.api.dto.response.LikeResponse;
+import cotato.backend.domain.recruitment.api.dto.response.SubmissionDetailResponse;
 import cotato.backend.domain.recruitment.dao.SubmissionRepository;
 import cotato.backend.domain.recruitment.entity.SubmissionEntity;
 import cotato.backend.domain.recruitment.enums.Part;
@@ -48,12 +49,12 @@ public class RecruitmentService {
 	}
 
 	@Transactional
-	public SubmissionLikeResult addLike(Long applicationId) {
+	public LikeResponse addLike(Long applicationId) {
 		SubmissionEntity submissionEntity = submissionRepository.findById(applicationId)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.APPLICATION_NOT_FOUND));
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.SUBMISSION_NOT_FOUND));
 
 		submissionEntity.incrementLikeCount();
-		return SubmissionLikeResult.of(submissionEntity.getId(), submissionEntity.getLikeCount());
+		return LikeResponse.of(submissionEntity.getId(), submissionEntity.getLikeCount());
 	}
 
 	public Page<SubmissionSummary> getSubmissions(
@@ -73,5 +74,21 @@ public class RecruitmentService {
 			application.getLikeCount(),
 			application.getSubmissionTime()
 		));
+	}
+
+	public SubmissionDetailResponse getSubmissionDetail(Long submissionId) {
+		SubmissionEntity submissionEntity = submissionRepository.findById(submissionId)
+			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.SUBMISSION_NOT_FOUND));
+
+		return SubmissionDetailResponse.of(
+			submissionEntity.getId(),
+			submissionEntity.getGeneration(),
+			submissionEntity.getPart(),
+			submissionEntity.getParticipationScore(),
+			submissionEntity.getGrowthMotivation(),
+			submissionEntity.getLikeCount(),
+			submissionEntity.getPhoneNumber(),
+			submissionEntity.getSubmissionTime()
+		);
 	}
 }

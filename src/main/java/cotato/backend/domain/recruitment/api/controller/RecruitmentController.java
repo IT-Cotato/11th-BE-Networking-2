@@ -16,8 +16,8 @@ import cotato.backend.common.dto.DefaultIdResponse;
 import cotato.backend.common.dto.PageResponse;
 import cotato.backend.domain.recruitment.api.dto.SubmissionSummary;
 import cotato.backend.domain.recruitment.api.dto.request.ApplyRequest;
-import cotato.backend.domain.recruitment.api.dto.SubmissionLikeResult;
 import cotato.backend.domain.recruitment.api.dto.response.LikeResponse;
+import cotato.backend.domain.recruitment.api.dto.response.SubmissionDetailResponse;
 import cotato.backend.domain.recruitment.application.RecruitmentService;
 import cotato.backend.domain.recruitment.enums.SortType;
 import lombok.RequiredArgsConstructor;
@@ -49,8 +49,7 @@ public class RecruitmentController {
 
 	@PatchMapping("/{submissionId}/like")
 	public ResponseEntity<DataResponse<LikeResponse>> addLike(@PathVariable Long submissionId) {
-		SubmissionLikeResult result = recruitmentService.addLike(submissionId);
-		LikeResponse response = LikeResponse.from(result);
+		LikeResponse response = recruitmentService.addLike(submissionId);
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 
@@ -65,5 +64,11 @@ public class RecruitmentController {
 		return ResponseEntity.ok(DataResponse.from(response));
 	}
 
-	@G
+	@GetMapping("/{submissionId}")
+	public ResponseEntity<DataResponse<SubmissionDetailResponse>> getSubmissionDetail(
+		@PathVariable Long submissionId
+	) {
+		SubmissionDetailResponse response = recruitmentService.getSubmissionDetail(submissionId);
+		return ResponseEntity.ok(DataResponse.from(response));
+	}
 }
