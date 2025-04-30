@@ -1,6 +1,7 @@
 package cotato.backend.domain.example.dto.request;
 
 import cotato.backend.domain.example.entity.Applicant;
+import cotato.backend.domain.example.entity.Part;
 import lombok.Getter;
 
 @Getter
@@ -12,7 +13,7 @@ public class ApplicantRequest {
 
     private int age;
 
-    private Applicant.Part part;
+    private Part part;
 
     private int passion;
 

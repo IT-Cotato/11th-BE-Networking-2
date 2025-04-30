@@ -1,5 +1,7 @@
 package cotato.backend.domain.example.application;
 
+import cotato.backend.common.exception.EntityNotFoundException;
+import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.example.dao.ApplicantRepository;
 import cotato.backend.domain.example.dto.request.ApplicantRequest;
 import cotato.backend.domain.example.entity.Applicant;
@@ -19,5 +21,14 @@ public class ApplicantService {
                 .request(request)
                 .build();
         return applicantRepository.save(applicant).getId();
+    }
+
+    @Transactional
+    public void increaseLike(Long id) {
+
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND));
+
+        applicant.increaseLike();
     }
 }

@@ -4,6 +4,7 @@ import cotato.backend.api.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.example.application.ApplicantService;
 import cotato.backend.domain.example.dto.request.ApplicantRequest;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,11 @@ public class ApplicantController {
         );
     }
 
+    @PatchMapping("/{id}/like")
+    public ResponseEntity<DataResponse<Void>> increaseLike(@PathVariable Long id) {
 
-
+        applicantService.increaseLike(id);
+        return ResponseEntity.ok(DataResponse.ok());
+    }
 
 }

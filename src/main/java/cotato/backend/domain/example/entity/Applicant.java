@@ -25,16 +25,16 @@ public class Applicant {
     private Long id;
 
     @Column(nullable = false, length = 10)
-    @Size(min=2, max=10, message="이름은 2글자 이상 10글자 이하여야 합니다.")
+    @Size(min=2, max=10)
     private String name;
 
     @Column(nullable = false)
-    @Min(value = 1, message = "지원 기수는 1 이상이어야 합니다.")
+    @Min(value = 1)
     private int generation;
 
     @Column(nullable = false)
-    @Min(value = 22, message = "나이는 22살 이상이어야 합니다.")
-    @Max(value = 30, message = "나이는 30살 이하여야 합니다.")
+    @Min(value = 22)
+    @Max(value = 30)
     private int age;
 
     @Column(nullable = false, length = 20)
@@ -42,17 +42,17 @@ public class Applicant {
     private Part part;
 
     @Column(nullable = false)
-    @Min(value = 0, message = "참여 적극성은 0 이상이어야 합니다.")
-    @Max(value = 10, message = "참여 적극성은 10 이하여야 합니다.")
+    @Min(value = 0)
+    @Max(value = 10)
     private int passion;
 
     @Column(nullable = false)
-    @Min(value = 0, message = "성장 의지는 0 이상이어야 합니다.")
-    @Max(value = 10, message = "성장 의지는 10 이하여야 합니다.")
+    @Min(value = 0)
+    @Max(value = 10)
     private int growth;
 
     @Column(nullable = false, length = 11)
-    @Pattern(regexp = "010\\d{8}$", message = "휴대폰 번호는 010으로 시작하는 11자리여야 합니다.")
+    @Pattern(regexp = "010\\d{8}$")
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -73,7 +73,7 @@ public class Applicant {
         this.submitTime = LocalDateTime.now();
     }
 
-    public enum Part {
-        MANAGER, DESIGNER, FRONTEND, BACKEND
+    public void increaseLike() {
+        this.likes++;
     }
 }
