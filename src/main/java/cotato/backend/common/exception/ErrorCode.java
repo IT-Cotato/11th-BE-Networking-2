@@ -35,7 +35,8 @@ public enum ErrorCode {
 	INVALID_PART_VALUE(HttpStatus.BAD_REQUEST, "파트는 PM, DESIGN, FE, BE 중 하나여야 합니다.", "APPLICATION-309"),
 
 	// 지원서 조회/처리 오류
-	APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "지원 서류를 찾을 수 없습니다.", "APPLICATION-401")
+	APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "지원 서류를 찾을 수 없습니다.", "APPLICATION-401"),
+	INVALID_APPLICATION_SORT_TYPE(HttpStatus.BAD_REQUEST, "정렬 타입은 OLD, NEW, LIKE_DESC, PARTICIPATION_SCORE_DESC, GROWTH_MOTIVATION_DESC 중 하나여야 합니다.", "APPLICATION-402"),
 	;
 
 	private final HttpStatus httpStatus;

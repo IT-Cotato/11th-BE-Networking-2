@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import cotato.backend.common.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,6 +55,24 @@ public class GlobalExceptionHandler {
 		// Part enum 관련 오류 처리
 		if(e.getMessage().contains("cotato.backend.domain.application.enums.Part")) {
 			errorCode = ErrorCode.INVALID_PART_VALUE;
+		}
+
+		ErrorResponse errorResponse = ErrorResponse.of(errorCode, request);
+		return ResponseEntity
+			.status(errorCode.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException (MethodArgumentTypeMismatchException e, HttpServletRequest request) {
+		log.error("MethodArgumentNotValidException 발생: {}", e.getMessage());
+		log.error("에러가 발생한 지점 {}, {}", request.getMethod(), request.getRequestURI());
+
+		ErrorCode errorCode = ErrorCode.BAD_REQUEST;
+
+		// SortType enum 관련 오류 처리
+		if(e.getMessage().contains("cotato.backend.domain.application.enums.SortType")) {
+			errorCode = ErrorCode.INVALID_APPLICATION_SORT_TYPE;
 		}
 
 		ErrorResponse errorResponse = ErrorResponse.of(errorCode, request);
