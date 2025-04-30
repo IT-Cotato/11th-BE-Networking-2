@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class RecruitmentService {
 
 	private final SubmissionRepository submissionRepository;
+	private final SubmissionFinder submissionFinder;
 
 	@Transactional
 	public Long apply(
@@ -62,10 +63,9 @@ public class RecruitmentService {
 		int size,
 		SortType sortType
 	) {
-		Pageable pageable = PageRequest.of(page, size, sortType.toSort());
-		Page<SubmissionEntity> applicationEntityPage = submissionRepository.findAll(pageable);
+		Page<SubmissionEntity> submissionEntities = submissionFinder.findAll(page, size, sortType);
 
-		return applicationEntityPage.map(application -> SubmissionSummary.of(
+		return submissionEntities.map(application -> SubmissionSummary.of(
 			application.getId(),
 			application.getGeneration(),
 			application.getPart(),
@@ -77,8 +77,7 @@ public class RecruitmentService {
 	}
 
 	public SubmissionDetailResponse getSubmissionDetail(Long submissionId) {
-		SubmissionEntity submissionEntity = submissionRepository.findById(submissionId)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.SUBMISSION_NOT_FOUND));
+		SubmissionEntity submissionEntity = submissionFinder.findById(submissionId);
 
 		return SubmissionDetailResponse.of(
 			submissionEntity.getId(),
