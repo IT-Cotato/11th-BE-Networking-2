@@ -55,7 +55,7 @@ public class Applicant {
     @Pattern(regexp = "010\\d{8}$")
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP(6)")
     private LocalDateTime submitTime;
 
     @Column(nullable = false)
