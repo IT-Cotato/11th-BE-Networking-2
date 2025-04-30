@@ -14,6 +14,7 @@ import cotato.backend.exception.notFoundInfo.NotFoundAdminException;
 import cotato.backend.exception.notFoundInfo.NotFoundFormException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class JpaLikeFormService implements LikeFormCommand {
     private final LoadLikePort loadLikePort;
     private final AddLikePort addLikePort;
 
+    @Transactional
     public void like(LikeFormDto dto) {
         Form form = loadFormPort.findById(dto.formId()).orElseThrow(NotFoundFormException::construct);
         Admin admin = loadAdminPort.findById(dto.adminId()).orElseThrow(NotFoundAdminException::construct);

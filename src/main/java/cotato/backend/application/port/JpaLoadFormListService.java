@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class JpaLoadFormListService implements LoadFormListQuery {
     private final LoadFormListPort loadFormListPort;
     private final LoadFormListByLikePort loadFormListByLikePort;
 
+    @Transactional(readOnly = true)
     public FormListResponse load(LoadFormListDto dto) {
         Pageable pageable = PageRequest.of(dto.pageNumber(), PAGE_SIZE);
         Page<Form> page = switch (dto.sortOption()) {
