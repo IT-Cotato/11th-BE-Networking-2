@@ -7,14 +7,18 @@ import cotato.backend.domain.attribute.GrowthDesire;
 import cotato.backend.domain.attribute.Name;
 import cotato.backend.domain.attribute.Part;
 import cotato.backend.domain.attribute.PhoneNumber;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -61,6 +65,9 @@ public class Form {
     @CreationTimestamp
     @Column(name = "submitted_at")
     private LocalDateTime submittedAt;
+
+    @OneToMany(mappedBy = "form", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private final List<Like> likes = new ArrayList<>();
 
     public Form(String name, int generation, int age, Part part, int engagement, int growthDesire,
                 String phoneNumber) {

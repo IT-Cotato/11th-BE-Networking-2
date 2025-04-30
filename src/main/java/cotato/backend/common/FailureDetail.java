@@ -17,7 +17,12 @@ public enum FailureDetail {
             String.format("참여 적극성은 %d 이상 %d 이하이어야 합니다.", Engagement.LOWER_BOUND, Engagement.UPPER_BOUND)),
     INVALID_GROWTH_DESIRE(HttpStatus.BAD_REQUEST,
             String.format("성장 의지는 %d 이상 %d 이하이어야 합니다.", GrowthDesire.LOWER_BOUND, GrowthDesire.UPPER_BOUND)),
-    INVALID_PHONE_NUMER(HttpStatus.BAD_REQUEST, "올바르지 않은 휴대폰 번호입니다.");
+    INVALID_PHONE_NUMER(HttpStatus.BAD_REQUEST, "올바르지 않은 휴대폰 번호입니다."),
+
+    NOT_FOUND_FORM(HttpStatus.NOT_FOUND, "존재하지 않는 지원자 서류입니다."),
+    NOT_FOUND_ADMIN(HttpStatus.NOT_FOUND, "존재하지 않는 관리자입니다."),
+
+    ALREADY_LIKED(HttpStatus.CONFLICT, "이미 좋아요를 눌렀습니다.");
 
     private final HttpStatus status;
     private final String message;
