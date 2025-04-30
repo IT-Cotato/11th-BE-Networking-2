@@ -160,4 +160,8 @@ public class ApplicationEntity {
 		}
 	}
 
+	public void incrementLikeCount() {
+		this.likeCount++;
+	}
+
 }
