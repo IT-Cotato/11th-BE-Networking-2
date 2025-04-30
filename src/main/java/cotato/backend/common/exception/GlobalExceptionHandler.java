@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 		ErrorCode errorCode = ErrorCode.BAD_REQUEST;
 
 		// Part enum 관련 오류 처리
-		if(e.getMessage().contains("cotato.backend.domain.example.entity.Part")) {
+		if(e.getMessage().contains("cotato.backend.domain.application.enums.Part")) {
 			errorCode = ErrorCode.INVALID_PART_VALUE;
 		}
 

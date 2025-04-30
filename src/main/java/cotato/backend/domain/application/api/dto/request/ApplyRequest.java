@@ -1,6 +1,6 @@
 package cotato.backend.domain.application.api.dto.request;
 
-import cotato.backend.domain.example.entity.Part;
+import cotato.backend.domain.application.enums.Part;
 
 public record ApplyRequest(
 	String name,

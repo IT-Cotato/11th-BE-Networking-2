@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import cotato.backend.common.exception.EntityValidationException;
 import cotato.backend.common.exception.ErrorCode;
-import cotato.backend.domain.example.entity.Part;
+import cotato.backend.domain.application.enums.Part;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -51,7 +51,7 @@ public class ApplicationEntity {
 	private String phoneNumber;
 
 	@Column(nullable = false)
-	private LocalDateTime applicationTime;
+	private LocalDateTime submissionTime;
 
 	@Column(nullable = false)
 	private Integer likeCount;
@@ -82,7 +82,7 @@ public class ApplicationEntity {
 		this.participationScore = participationScore;
 		this.growthMotivation = growthMotivation;
 		this.phoneNumber = phoneNumber;
-		this.applicationTime = LocalDateTime.now();
+		this.submissionTime = LocalDateTime.now();
 		this.likeCount = 0;
 	}
 
