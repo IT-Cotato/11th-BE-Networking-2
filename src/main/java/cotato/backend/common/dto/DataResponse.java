@@ -29,5 +29,4 @@ public class DataResponse<T> extends BaseResponse {
 		return new DataResponse<>(HttpStatus.CREATED, data);
 	}
 
-	// 다른 응답 필요하면 추가
 }
