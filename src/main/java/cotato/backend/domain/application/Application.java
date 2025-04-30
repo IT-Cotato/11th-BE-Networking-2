@@ -33,6 +33,9 @@ public class Application {
     @Column(name = "application_growth")
     private int growth;
 
+    @Column(name = "application_like")
+    private int like;
+
     @Column(name = "application_submittedAt")
     private LocalDateTime submittedAt;
 
@@ -47,6 +50,7 @@ public class Application {
         this.part = part;
         this.participation = participation;
         this.growth = growth;
+        this.like = 0;
         this.submittedAt = LocalDateTime.now();
     }
 
@@ -68,4 +72,8 @@ public class Application {
         }
     }
 
+
+    public int addLike() {
+        return this.like += 1;
+    }
 }

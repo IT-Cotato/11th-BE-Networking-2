@@ -44,4 +44,10 @@ public class ApplicationController {
         return applicationService.getApplicationById(id);
     }
 
+
+    @PostMapping("/{id}/like")
+    public int addLike(@PathVariable("id") Long applicationId) {
+        return applicationService.addLike(applicationId);
+    }
+
 }

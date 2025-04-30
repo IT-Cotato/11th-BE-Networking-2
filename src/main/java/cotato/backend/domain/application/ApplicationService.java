@@ -8,4 +8,6 @@ public interface ApplicationService {
     public Long save(ApplicantDto applicantDto, ApplicationDto applicationDto);
 
     public ApplicationResponse getApplicationById(Long applicationId);
+
+    public int addLike(Long applicationId);
 }

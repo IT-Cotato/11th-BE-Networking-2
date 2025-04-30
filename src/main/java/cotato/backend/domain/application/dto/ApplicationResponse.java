@@ -12,6 +12,7 @@ public record ApplicationResponse(
         Part part,
         int participation,
         int growth,
+        int like,
         String phoneNumber,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
         LocalDateTime submittedAt
@@ -24,6 +25,7 @@ public record ApplicationResponse(
                 application.getPart(),
                 application.getParticipation(),
                 application.getGrowth(),
+                application.getLike(),
                 application.getApplicant().getPhoneNumber(),
                 application.getSubmittedAt()
         );

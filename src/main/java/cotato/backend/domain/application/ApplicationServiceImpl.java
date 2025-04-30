@@ -34,4 +34,12 @@ public class ApplicationServiceImpl implements ApplicationService{
 
         return ApplicationResponse.from(application);
     }
+
+    @Override
+    @Transactional
+    public int addLike(Long applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new IllegalArgumentException("지원서를 찾을 수 없습니다."));
+        return application.addLike();
+    }
 }
