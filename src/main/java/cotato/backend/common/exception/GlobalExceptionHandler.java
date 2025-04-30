@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
 		ErrorCode errorCode = ErrorCode.BAD_REQUEST;
 
 		// Part enum 관련 오류 처리
-		if(e.getMessage().contains("cotato.backend.domain.application.enums.Part")) {
+		if(e.getMessage().contains("cotato.backend.domain.recruitment.enums.Part")) {
 			errorCode = ErrorCode.INVALID_PART_VALUE;
 		}
 
@@ -71,8 +71,8 @@ public class GlobalExceptionHandler {
 		ErrorCode errorCode = ErrorCode.BAD_REQUEST;
 
 		// SortType enum 관련 오류 처리
-		if(e.getMessage().contains("cotato.backend.domain.application.enums.SortType")) {
-			errorCode = ErrorCode.INVALID_APPLICATION_SORT_TYPE;
+		if(e.getMessage().contains("cotato.backend.domain.recruitment.enums.SortType")) {
+			errorCode = ErrorCode.INVALID_SUBMISSION_SORT_TYPE;
 		}
 
 		ErrorResponse errorResponse = ErrorResponse.of(errorCode, request);
