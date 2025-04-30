@@ -1,34 +1,43 @@
 package cotato.backend.common.dto;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import cotato.backend.common.exception.ErrorCode;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse extends BaseResponse {
-
 	private final String code;
 	private final String message;
-	private final String method;
-	private final String requestURI;
+	private final List<String> reason;
 
-	private ErrorResponse(String code, String message, String method, String requestURI, HttpStatus httpStatus) {
-		super(httpStatus);
+	private ErrorResponse(HttpStatus status, String code, String message, List<String> reason) {
+		super(false, status);
 		this.code = code;
 		this.message = message;
-		this.method = method;
-		this.requestURI = requestURI;
+		this.reason = reason;
 	}
 
-	public static ErrorResponse of(ErrorCode errorCode, HttpServletRequest request) {
+	public static ErrorResponse from(ErrorCode errorCode) {
 		return new ErrorResponse(
+			errorCode.getStatus(),
 			errorCode.getCode(),
 			errorCode.getMessage(),
-			request.getMethod(),
-			request.getRequestURI(),
-			errorCode.getHttpStatus()
+			null
+		);
+	}
+
+	public static ErrorResponse of(ErrorCode errorCode, List<String> reason) {
+		return new ErrorResponse(
+			errorCode.getStatus(),
+			errorCode.getCode(),
+			errorCode.getMessage(),
+			reason
 		);
 	}
 }
