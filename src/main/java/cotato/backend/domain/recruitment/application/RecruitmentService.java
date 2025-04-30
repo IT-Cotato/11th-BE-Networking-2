@@ -24,6 +24,7 @@ public class RecruitmentService {
 
 	private final SubmissionRepository submissionRepository;
 	private final SubmissionFinder submissionFinder;
+	private final SubmissionDtoMapper submissionDtoMapper;
 
 	@Transactional
 	public Long apply(
@@ -50,44 +51,19 @@ public class RecruitmentService {
 	}
 
 	@Transactional
-	public LikeResponse addLike(Long applicationId) {
-		SubmissionEntity submissionEntity = submissionRepository.findById(applicationId)
-			.orElseThrow(() -> new EntityNotFoundException(ErrorCode.SUBMISSION_NOT_FOUND));
-
+	public LikeResponse addLike(Long submissionId) {
+		SubmissionEntity submissionEntity = submissionFinder.findById(submissionId);
 		submissionEntity.incrementLikeCount();
 		return LikeResponse.of(submissionEntity.getId(), submissionEntity.getLikeCount());
 	}
 
-	public Page<SubmissionSummary> getSubmissions(
-		int page,
-		int size,
-		SortType sortType
-	) {
+	public Page<SubmissionSummary> getSubmissions(int page, int size, SortType sortType) {
 		Page<SubmissionEntity> submissionEntities = submissionFinder.findAll(page, size, sortType);
-
-		return submissionEntities.map(application -> SubmissionSummary.of(
-			application.getId(),
-			application.getGeneration(),
-			application.getPart(),
-			application.getParticipationScore(),
-			application.getGrowthMotivation(),
-			application.getLikeCount(),
-			application.getSubmissionTime()
-		));
+		return submissionDtoMapper.toSummaryPage(submissionEntities);
 	}
 
 	public SubmissionDetailResponse getSubmissionDetail(Long submissionId) {
 		SubmissionEntity submissionEntity = submissionFinder.findById(submissionId);
-
-		return SubmissionDetailResponse.of(
-			submissionEntity.getId(),
-			submissionEntity.getGeneration(),
-			submissionEntity.getPart(),
-			submissionEntity.getParticipationScore(),
-			submissionEntity.getGrowthMotivation(),
-			submissionEntity.getLikeCount(),
-			submissionEntity.getPhoneNumber(),
-			submissionEntity.getSubmissionTime()
-		);
+		return submissionDtoMapper.toDetailResponse(submissionEntity);
 	}
 }
