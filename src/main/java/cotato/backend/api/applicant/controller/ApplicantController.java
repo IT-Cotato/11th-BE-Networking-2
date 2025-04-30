@@ -1,15 +1,17 @@
-package cotato.backend.api.controller.applicant;
+package cotato.backend.api.applicant.controller;
 
 import static org.springframework.http.HttpStatus.*;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cotato.backend.api.controller.dto.ApplicantRequest;
-import cotato.backend.api.dto.response.DefaultIdResponse;
+import cotato.backend.api.applicant.dto.response.ApplicantGetResponse;
+import cotato.backend.api.applicant.dto.request.ApplicantRequest;
+import cotato.backend.api.applicant.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.ApiResponse;
 import cotato.backend.domain.applicant.application.ApplicantService;
 import jakarta.validation.Valid;
@@ -30,6 +32,14 @@ public class ApplicantController {
 				DefaultIdResponse.of(applicantService.save(request.toCreateApplicant()))
 			)
 		);
+	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse<ApplicantGetResponse>> get(@RequestBody @Valid ApplicantRequest request) {
+		return ResponseEntity.status(OK).body(
+			ApiResponse.ok(
+				DefaultIdResponse.of(applicantService.get(request.toGetApplicant()))
+			)
+		);
 	}
 }

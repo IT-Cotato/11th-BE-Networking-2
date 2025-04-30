@@ -1,4 +1,4 @@
-package cotato.backend.api.controller.dto;
+package cotato.backend.api.applicant.dto.request;
 
 import cotato.backend.domain.applicant.dto.CreateApplicant;
 import cotato.backend.domain.applicant.enums.PartType;

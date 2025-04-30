@@ -19,7 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import cotato.backend.api.controller.dto.ApplicantRequest;
+import cotato.backend.api.applicant.controller.ApplicantController;
+import cotato.backend.api.applicant.dto.request.ApplicantRequest;
 import cotato.backend.domain.applicant.application.ApplicantService;
 
 @WebMvcTest(ApplicantController.class)
