@@ -1,9 +1,12 @@
 package cotato.backend.domain.applicant.service.query;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cotato.backend.common.exception.ErrorCode;
+import cotato.backend.domain.applicant.dto.response.ApplicantResponseDto;
 import cotato.backend.domain.applicant.dto.response.SearchDetailsResponseDto;
 import cotato.backend.domain.applicant.entity.Applicant;
 import cotato.backend.domain.applicant.exception.ApplicantException;
@@ -21,5 +24,10 @@ public class ApplicantQueryService {
 		Applicant findedApplicant = applicantRepository.findById(id)
 			.orElseThrow(() -> new ApplicantException(ErrorCode.APPLICANT_NOT_FOUND));
 		return SearchDetailsResponseDto.from(findedApplicant);
+	}
+
+	public Page<ApplicantResponseDto> findApplicantsSortedBy(Pageable pageable) {
+		Page<Applicant> applicants = applicantRepository.findAll(pageable);
+		return applicants.map(ApplicantResponseDto::from);
 	}
 }
