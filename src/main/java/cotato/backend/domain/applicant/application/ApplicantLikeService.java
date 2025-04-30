@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cotato.backend.domain.applicant.application.port.ApplicantLikeRepository;
+import cotato.backend.domain.applicant.domain.ApplicantLike;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -16,5 +17,10 @@ public class ApplicantLikeService {
 
 	public Long getLikes(Long applicantId) {
 		return applicantLikeRepository.countByApplicantId(applicantId);
+	}
+
+	@Transactional
+	public Long like(Long applicantId) {
+		return applicantLikeRepository.save(ApplicantLike.createNew(applicantId));
 	}
 }

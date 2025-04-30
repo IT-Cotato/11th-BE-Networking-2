@@ -14,6 +14,7 @@ import cotato.backend.api.applicant.dto.request.ApplicantRequest;
 import cotato.backend.api.applicant.dto.response.ApplicantGetResponse;
 import cotato.backend.api.applicant.dto.response.DefaultIdResponse;
 import cotato.backend.common.dto.ApiResponse;
+import cotato.backend.domain.applicant.application.ApplicantLikeService;
 import cotato.backend.domain.applicant.application.ApplicantService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class ApplicantController {
 
 	private final ApplicantService applicantService;
+	private final ApplicantLikeService applicantLikeService;
 
 	@PostMapping
 	public ResponseEntity<ApiResponse<DefaultIdResponse>> save(@RequestBody @Valid ApplicantRequest request) {
@@ -40,6 +42,15 @@ public class ApplicantController {
 		return ResponseEntity.ok(
 			ApiResponse.ok(
 				applicantService.getApplicant(id)
+			)
+		);
+	}
+
+	@PostMapping("/likes/{id}")
+	public ResponseEntity<ApiResponse<DefaultIdResponse>> like(@PathVariable Long id) {
+		return ResponseEntity.status(CREATED).body(
+			ApiResponse.created(
+				DefaultIdResponse.of(applicantLikeService.like(id))
 			)
 		);
 	}
