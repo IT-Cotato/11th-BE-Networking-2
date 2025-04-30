@@ -1,8 +1,12 @@
 package cotato.backend.domain.example.dto.request;
 
-import org.hibernate.annotations.processing.Pattern;
+
 
 import cotato.backend.domain.example.entity.Enum.Part;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,6 +34,6 @@ public class ApplicantRequest {
     @Max(10)
     private Integer growthScore;
 
-    @Pattern(regexp = "^010\\d{8}$")
+    @Pattern(regexp = "^010\\d{8}$", message = "010으로 시작하는 11자리 숫자여야 합니다.")
     private String phone;
 }
