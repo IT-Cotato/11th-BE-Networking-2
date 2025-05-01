@@ -1,11 +1,14 @@
 package cotato.backend.domain.applicant.application;
 
+import cotato.backend.common.exception.EntityNotFoundException;
+import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.dao.ApplicantRepository;
 import cotato.backend.domain.applicant.dto.ApplicantRequest;
 import cotato.backend.domain.applicant.entity.Applicant;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -46,5 +49,14 @@ public class ApplicantService {
         applicantRepository.save(applicant);
         return applicant.getId();
     }
+    public void addLike(Long id) {
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+
+
+        applicant.addLike(); // likes += 1
+        applicantRepository.save(applicant);
+    }
+
 
 }

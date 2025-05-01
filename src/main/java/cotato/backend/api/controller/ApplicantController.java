@@ -20,4 +20,10 @@ public class ApplicantController {
         Long id = applicantService.create(request);
         return ResponseEntity.ok(new DefaultIdResponse(id));
     }
+    @PostMapping("/{id}/like")
+    public ResponseEntity<Void> addLike(@PathVariable Long id) {
+        applicantService.addLike(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
