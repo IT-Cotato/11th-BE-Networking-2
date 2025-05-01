@@ -1,5 +1,6 @@
 package cotato.backend.domain.applicant.service.query;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class ApplicantQueryService {
 		return SearchDetailsResponseDto.from(findedApplicant);
 	}
 
+	@Cacheable(value = "applicants", key = "#pageable.pageNumber + '_' + #pageable.pageSize + '_' + #pageable.sort")
 	public Page<ApplicantResponseDto> findApplicantsSortedBy(Pageable pageable) {
 		Page<Applicant> applicants = applicantRepository.findAll(pageable);
 		return applicants.map(ApplicantResponseDto::from);
