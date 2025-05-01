@@ -29,7 +29,7 @@ public class ApplicantCommandService {
 	}
 
 	public void increaseLikes(Long id) {
-		Applicant applicant = applicantRepository.findById(id)
+		Applicant applicant = applicantRepository.findByIdForUpdate(id)
 			.orElseThrow(() -> new ApplicantException(APPLICANT_NOT_FOUND));
 		applicant.addLike();
 	}
