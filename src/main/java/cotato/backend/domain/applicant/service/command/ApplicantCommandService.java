@@ -12,9 +12,7 @@ import cotato.backend.domain.applicant.repository.ApplicantRepository;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
