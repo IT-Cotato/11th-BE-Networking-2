@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,7 +20,12 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "applicant")
+@Table(name = "applicant", indexes = {
+	@Index(name = "idx_applicant_created_at", columnList = "created_at"),
+	@Index(name = "idx_applicant_likes_created_at", columnList = "likes, created_at"),
+	@Index(name = "idx_applicant_activity_created_at", columnList = "activity, created_at"),
+	@Index(name = "idx_applicant_growth_created_at", columnList = "growth, created_at"),
+})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Applicant extends BaseEntity {
 
