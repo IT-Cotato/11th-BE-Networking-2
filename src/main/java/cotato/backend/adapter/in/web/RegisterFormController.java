@@ -5,6 +5,7 @@ import cotato.backend.application.port.in.RegisterFormCommand;
 import cotato.backend.common.ApiResponse;
 import cotato.backend.common.BaseResponse;
 import cotato.backend.common.SuccessDetail;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class RegisterFormController {
     private final RegisterFormCommand registerFormCommand;
 
     @PostMapping
-    public ResponseEntity<BaseResponse<?>> register(@RequestBody RegisterFormRequest request) {
+    public ResponseEntity<BaseResponse<?>> register(@RequestBody @Valid RegisterFormRequest request) {
         return ApiResponse.success(SuccessDetail.REGISTERED, registerFormCommand.register(request));
     }
 }

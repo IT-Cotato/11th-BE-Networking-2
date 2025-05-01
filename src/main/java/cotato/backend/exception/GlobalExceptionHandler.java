@@ -4,7 +4,9 @@ import cotato.backend.common.ApiResponse;
 import cotato.backend.common.BaseResponse;
 import cotato.backend.exception.invalidInfo.InvalidInfoException;
 import cotato.backend.exception.notFoundInfo.NotFoundInfoException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,5 +25,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AlreadyLikedException.class)
     public ResponseEntity<BaseResponse<?>> handleAlreadyLikedException(AlreadyLikedException e) {
         return ApiResponse.failure(e.failureDetail);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<BaseResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        return ApiResponse.generate(HttpStatus.BAD_REQUEST, e.getBindingResult().getFieldError().getDefaultMessage());
     }
 }

@@ -1,5 +1,6 @@
 package cotato.backend.common;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class ApiResponse {
@@ -13,5 +14,9 @@ public class ApiResponse {
 
     public static <T> ResponseEntity<BaseResponse<?>> failure(FailureDetail failureDetail) {
         return ResponseEntity.status(failureDetail.status()).body(BaseResponse.of(failureDetail));
+    }
+
+    public static <T> ResponseEntity<BaseResponse<?>> generate(HttpStatus status, String message) {
+        return ResponseEntity.status(status).body(BaseResponse.of(status, message));
     }
 }

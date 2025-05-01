@@ -5,8 +5,10 @@ import cotato.backend.domain.attribute.Engagement;
 import cotato.backend.domain.attribute.Generation;
 import cotato.backend.domain.attribute.GrowthDesire;
 import cotato.backend.domain.attribute.Name;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum FailureDetail {
     INVALID_NAME(HttpStatus.BAD_REQUEST,
             String.format("이름은 한글로 %d자 이상 %d자 이하이어야 합니다.", Name.UPPER_BOUND, Name.UPPER_BOUND)),
@@ -22,7 +24,7 @@ public enum FailureDetail {
             "정렬 기준은 OLDEST, LATEST, MOST_LIKE, HIGHEST_ENGAGEMENT, HIGHEST_GROWTH_DESIRE 중 하나이어야 합니다."),
 
     NOT_FOUND_FORM(HttpStatus.NOT_FOUND, "존재하지 않는 지원자 서류입니다."),
-    NOT_FOUND_ADMIN(HttpStatus.NOT_FOUND, "존재하지 않는 관리자입니다."),
+    NOT_FOUND_ADMIN(HttpStatus.NOT_FOUND, "존재하지 않는 운영진입니다."),
 
     ALREADY_LIKED(HttpStatus.CONFLICT, "이미 좋아요를 눌렀습니다.");
 

@@ -6,6 +6,7 @@ import cotato.backend.application.port.in.LikeFormCommand;
 import cotato.backend.common.ApiResponse;
 import cotato.backend.common.BaseResponse;
 import cotato.backend.common.SuccessDetail;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,8 @@ public class LikeFormController {
     private final LikeFormCommand likeFormCommand;
 
     @PostMapping("/{formId}")
-    public ResponseEntity<BaseResponse<?>> like(@RequestBody LikeFormRequest request, @PathVariable UUID formId) {
+    public ResponseEntity<BaseResponse<?>> like(@RequestBody @Valid LikeFormRequest request,
+                                                @PathVariable UUID formId) {
         likeFormCommand.like(LikeFormDto.of(request, formId));
         return ApiResponse.success(SuccessDetail.LIKED);
     }

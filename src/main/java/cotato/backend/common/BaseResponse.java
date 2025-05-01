@@ -3,6 +3,7 @@ package cotato.backend.common;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @Builder
@@ -31,6 +32,13 @@ public class BaseResponse<T> {
         return BaseResponse.builder()
                 .status(failureDetail.status())
                 .message(failureDetail.message())
+                .build();
+    }
+
+    public static <T> BaseResponse<?> of(HttpStatus status, String message) {
+        return BaseResponse.builder()
+                .status(status.value())
+                .message(message)
                 .build();
     }
 }

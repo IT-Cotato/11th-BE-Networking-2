@@ -11,6 +11,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,38 +34,39 @@ import org.hibernate.annotations.CreationTimestamp;
 public class Form {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Embedded
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private Name name;
 
     @Embedded
-    @Column(name = "generation")
+    @Column(name = "generation", nullable = false)
     private Generation generation;
 
     @Embedded
-    @Column(name = "age")
+    @Column(name = "age", nullable = false)
     private Age age;
 
-    @Column(name = "part")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "part", nullable = false)
     private Part part;
 
     @Embedded
-    @Column(name = "engagement")
+    @Column(name = "engagement", nullable = false)
     private Engagement engagement;
 
     @Embedded
-    @Column(name = "growth_desire")
+    @Column(name = "growth_desire", nullable = false)
     private GrowthDesire growthDesire;
 
     @Embedded
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private PhoneNumber phoneNumber;
 
     @CreationTimestamp
-    @Column(name = "submitted_at")
+    @Column(name = "submitted_at", nullable = false)
     private LocalDateTime submittedAt;
 
     @OneToMany(mappedBy = "form", cascade = CascadeType.PERSIST, orphanRemoval = true)
