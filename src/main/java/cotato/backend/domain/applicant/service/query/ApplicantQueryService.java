@@ -22,9 +22,9 @@ public class ApplicantQueryService {
 	private final ApplicantRepository applicantRepository;
 
 	public SearchDetailsResponseDto findById(Long id) {
-		Applicant findedApplicant = applicantRepository.findById(id)
+		Applicant foundApplicant = applicantRepository.findById(id)
 			.orElseThrow(() -> new ApplicantException(ErrorCode.APPLICANT_NOT_FOUND));
-		return SearchDetailsResponseDto.from(findedApplicant);
+		return SearchDetailsResponseDto.from(foundApplicant);
 	}
 
 	@Cacheable(value = "applicants", key = "#pageable.pageNumber + '_' + #pageable.pageSize + '_' + #pageable.sort")
