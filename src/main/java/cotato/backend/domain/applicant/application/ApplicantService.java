@@ -1,6 +1,7 @@
 package cotato.backend.domain.applicant.application;
 
 import cotato.backend.domain.applicant.dto.ApplicantListResponse;
+import cotato.backend.domain.applicant.dto.ApplicantResponse;
 import cotato.backend.domain.applicant.dto.ApplicantSearchCondition;
 import cotato.backend.domain.applicant.entity.Applicant;
 
@@ -66,7 +67,7 @@ public class ApplicantService {
         applicant.addLike(); // likes += 1
         applicantRepository.save(applicant);
     }
-    // 아래 메서드를 추가해줘
+
     public Page<ApplicantListResponse> getApplicants(ApplicantSearchCondition condition, Pageable pageable) {
         Page<Applicant> applicants = switch (condition) {
             case OLDEST -> applicantRepository.findAllByOrderBySubmittedAtAsc(pageable);
@@ -78,6 +79,12 @@ public class ApplicantService {
 
         return applicants.map(ApplicantListResponse::from);
     }
+    public ApplicantResponse getApplicant(Long id) {
+        Applicant applicant = applicantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.ENTITY_NOT_FOUND));
+        return ApplicantResponse.from(applicant);
+    }
+
 
 
 

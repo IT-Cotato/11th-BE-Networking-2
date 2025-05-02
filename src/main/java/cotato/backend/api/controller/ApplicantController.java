@@ -7,6 +7,7 @@ import cotato.backend.domain.applicant.dto.ApplicantResponse;
 import cotato.backend.domain.applicant.application.ApplicantService;
 import cotato.backend.api.dto.response.DefaultIdResponse;
 import cotato.backend.domain.applicant.dto.ApplicantSearchCondition;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApplicantController {
 
     private final ApplicantService applicantService;
-
-    @PostMapping
-    public ResponseEntity<DefaultIdResponse> createApplicant(@RequestBody ApplicantRequest request) {
-        Long id = applicantService.create(request);
-        return ResponseEntity.ok(new DefaultIdResponse(id));
-    }
+    
     @PostMapping("/{id}/like")
     public ResponseEntity<Void> addLike(@PathVariable Long id) {
         applicantService.addLike(id);
@@ -39,6 +35,18 @@ public class ApplicantController {
         Page<ApplicantListResponse> result = applicantService.getApplicants(condition, pageable);
         return ResponseEntity.ok(DataResponse.from(result));
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<DataResponse<ApplicantResponse>> getApplicant(@PathVariable Long id) {
+        ApplicantResponse response = applicantService.getApplicant(id);
+        return ResponseEntity.ok(DataResponse.from(response));
+    }
+    @PostMapping
+    public ResponseEntity<DefaultIdResponse> createApplicant(@RequestBody @Valid ApplicantRequest request) {
+        Long id = applicantService.create(request);
+        return ResponseEntity.ok(new DefaultIdResponse(id));
+    }
+
+
 
 
 }
