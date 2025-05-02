@@ -1,12 +1,21 @@
 package cotato.backend.domain.applicant.application;
 
+import cotato.backend.domain.applicant.dto.ApplicantListResponse;
+import cotato.backend.domain.applicant.dto.ApplicantSearchCondition;
+import cotato.backend.domain.applicant.entity.Applicant;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import cotato.backend.common.exception.EntityNotFoundException;
 import cotato.backend.common.exception.ErrorCode;
 import cotato.backend.domain.applicant.dao.ApplicantRepository;
+
 import cotato.backend.domain.applicant.dto.ApplicantRequest;
-import cotato.backend.domain.applicant.entity.Applicant;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 
@@ -57,6 +66,19 @@ public class ApplicantService {
         applicant.addLike(); // likes += 1
         applicantRepository.save(applicant);
     }
+    // 아래 메서드를 추가해줘
+    public Page<ApplicantListResponse> getApplicants(ApplicantSearchCondition condition, Pageable pageable) {
+        Page<Applicant> applicants = switch (condition) {
+            case OLDEST -> applicantRepository.findAllByOrderBySubmittedAtAsc(pageable);
+            case LATEST -> applicantRepository.findAllByOrderBySubmittedAtDesc(pageable);
+            case MOST_LIKES -> applicantRepository.findAllByOrderByLikesDescSubmittedAtAsc(pageable);
+            case HIGH_PARTICIPATION -> applicantRepository.findAllByOrderByParticipationDescSubmittedAtAsc(pageable);
+            case HIGH_GROWTH -> applicantRepository.findAllByOrderByGrowthDescSubmittedAtAsc(pageable);
+        };
+
+        return applicants.map(ApplicantListResponse::from);
+    }
+
 
 
 }
