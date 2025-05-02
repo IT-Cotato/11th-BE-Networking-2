@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class ApplicantController {
 
     private final ApplicantService applicantService;
-    
+
     @PostMapping("/{id}/like")
     public ResponseEntity<Void> addLike(@PathVariable Long id) {
         applicantService.addLike(id);
