@@ -3,6 +3,7 @@ package cotato.backend.domain.application;
 import cotato.backend.common.exception.InvalidGenerationException;
 import cotato.backend.common.exception.InvalidGrowthException;
 import cotato.backend.common.exception.InvalidParticipationException;
+import cotato.backend.domain.admin.Admin;
 import cotato.backend.domain.applicant.Applicant;
 import cotato.backend.domain.application.enums.Part;
 import cotato.backend.domain.like.Like;
@@ -80,5 +81,11 @@ public class Application {
 
     public int getLikeCount() {
         return likes.size();
+    }
+
+    public List<Admin> getLikedAdmins() {
+        return likes.stream()
+                .map(Like::getAdmin)
+                .toList();
     }
 }

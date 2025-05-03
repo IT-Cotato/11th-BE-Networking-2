@@ -2,14 +2,12 @@ package cotato.backend.domain.application;
 
 import cotato.backend.common.exception.ApplicationNotFoundException;
 import cotato.backend.common.exception.InvalidSortOptionException;
+import cotato.backend.domain.admin.Admin;
 import cotato.backend.domain.applicant.Applicant;
 import cotato.backend.domain.applicant.ApplicantService;
 import cotato.backend.domain.applicant.dto.ApplicantDto;
 import cotato.backend.domain.application.dao.ApplicationRepository;
-import cotato.backend.domain.application.dto.ApplicationDto;
-import cotato.backend.domain.application.dto.ApplicationListResponse;
-import cotato.backend.domain.application.dto.ApplicationPagedResponse;
-import cotato.backend.domain.application.dto.ApplicationResponse;
+import cotato.backend.domain.application.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -50,6 +48,13 @@ public class ApplicationServiceImpl implements ApplicationService{
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new ApplicationNotFoundException());
         return application.getLikeCount();
+    }
+
+    @Override
+    public ApplicationLikeDetailsResponse getApplicationLikeDetails(Long applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new ApplicationNotFoundException());
+        return new ApplicationLikeDetailsResponse(application.getId(), application.getLikedAdmins(), application.getLikeCount());
     }
 
     public ApplicationPagedResponse getApplications(int page, int size, String sortBy) {

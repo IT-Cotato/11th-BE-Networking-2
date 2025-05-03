@@ -11,6 +11,8 @@ import cotato.backend.domain.application.Application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService{
@@ -31,6 +33,7 @@ public class LikeServiceImpl implements LikeService{
         Like like = Like.builder()
                 .admin(admin)
                 .application(application)
+                .createdAt(LocalDateTime.now())
                 .build();
         likeRepository.save(like);
 

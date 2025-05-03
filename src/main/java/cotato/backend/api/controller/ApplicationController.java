@@ -3,10 +3,7 @@ package cotato.backend.api.controller;
 import cotato.backend.common.dto.SuccessResponse;
 import cotato.backend.domain.applicant.dto.ApplicantDto;
 import cotato.backend.domain.application.ApplicationService;
-import cotato.backend.domain.application.dto.ApplicationDto;
-import cotato.backend.domain.application.dto.ApplicationPagedResponse;
-import cotato.backend.domain.application.dto.ApplicationResponse;
-import cotato.backend.domain.application.dto.CreateApplicationRequestDto;
+import cotato.backend.domain.application.dto.*;
 import cotato.backend.domain.like.LikeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@RequestMapping("/api/v1/applications")
+@RequestMapping("/api/v2/applications")
 public class ApplicationController {
 
 	private final ApplicationService applicationService;
@@ -52,6 +49,15 @@ public class ApplicationController {
         int likeCount = applicationService.getApplicationById(applicationId).like();
         return ResponseEntity.ok(new SuccessResponse<>(200,"지원서 좋아요 성공", likeCount));
     }
+
+    @GetMapping("/{applicationId}/like-details")
+    public ResponseEntity<SuccessResponse<ApplicationLikeDetailsResponse>> getApplicationLikeDetails(@PathVariable("applicationId") Long applicationId) {
+        ApplicationLikeDetailsResponse applicationLikeDetails = applicationService.getApplicationLikeDetails(applicationId);
+        return ResponseEntity.ok(new SuccessResponse<>(200,"지원서 좋아요 상세 정보 조회 성공", applicationLikeDetails));
+    }
+
+
+
 
     @GetMapping
     public ResponseEntity<SuccessResponse<ApplicationPagedResponse>> getApplications(
