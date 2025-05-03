@@ -83,16 +83,7 @@ public class ApplicationServiceImpl implements ApplicationService{
         Page<Application> applicationPage = applicationRepository.findAll(pageable);
 
         List<ApplicationListResponse> content = applicationPage.getContent().stream()
-                .map(app -> new ApplicationListResponse(
-                        app.getApplicant().getId(),
-                        app.getId(),
-                        app.getGeneration(),
-                        app.getPart(),
-                        app.getParticipation(),
-                        app.getGrowth(),
-                        app.getLikeCount(),
-                        app.getSubmittedAt()
-                )).toList();
+                .map(ApplicationListResponse::from).toList();
 
         return new ApplicationPagedResponse(
                 content,

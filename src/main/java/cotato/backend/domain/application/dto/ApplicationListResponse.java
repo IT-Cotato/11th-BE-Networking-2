@@ -17,5 +17,18 @@ public record ApplicationListResponse (
         int likeCount,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
         LocalDateTime submittedAt
-) { }
+) {
+        public static ApplicationListResponse from(Application app) {
+                return new ApplicationListResponse(
+                        app.getApplicant().getId(),
+                        app.getId(),
+                        app.getGeneration(),
+                        app.getPart(),
+                        app.getParticipation(),
+                        app.getGrowth(),
+                        app.getLikeCount(),
+                        app.getSubmittedAt()
+                );
+        }
+}
 
