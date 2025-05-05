@@ -6,6 +6,8 @@ import cotato.backend.common.exception.InvalidApplicantPhoneNumberException;
 import jakarta.persistence.*;
 import lombok.*;
 
+import static cotato.backend.common.exception.ErrorCode.INVALID_PARAMETER;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,19 +40,19 @@ public class Applicant {
 
     private void validateName(String name) {
         if (name == null || name.length() < 2 || name.length() > 10) {
-            throw new InvalidApplicantNameException();
+            throw new InvalidApplicantNameException(INVALID_PARAMETER);
         }
     }
 
     private void validateAge(int age) {
         if (age < 22 || age > 30) {
-            throw new InvalidApplicantAgeException();
+            throw new InvalidApplicantAgeException(INVALID_PARAMETER);
         }
     }
 
     private void validatePhoneNumber(String phoneNumber) {
         if (phoneNumber == null || !phoneNumber.startsWith("010") || phoneNumber.length() != 11) {
-            throw new InvalidApplicantPhoneNumberException();
+            throw new InvalidApplicantPhoneNumberException(INVALID_PARAMETER);
         }
     }
 

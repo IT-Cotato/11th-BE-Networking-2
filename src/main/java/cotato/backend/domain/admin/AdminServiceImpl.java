@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static cotato.backend.common.exception.ErrorCode.RESOURCE_CONFLICT;
+
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService{
@@ -17,7 +19,7 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public Long save(CreateAdminRequestDto dto) {
         if (adminRepository.findByPhoneNumber(dto.phoneNumber()).isPresent()) {
-            throw new AdminAlreadyExistsException();
+            throw new AdminAlreadyExistsException(RESOURCE_CONFLICT);
         }
         return adminRepository.save(dto.toEntity()).getId();
     }

@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import static cotato.backend.common.exception.ErrorCode.NOT_FOUND;
+import static cotato.backend.common.exception.ErrorCode.RESOURCE_CONFLICT;
+
 @Service
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService{
@@ -22,12 +25,12 @@ public class LikeServiceImpl implements LikeService{
 
     public void addLike(Long adminId, Long applicationId) {
         Admin admin = adminRepository.findById(adminId)
-                .orElseThrow(() -> new AdminNotFoundException());
+                .orElseThrow(() -> new AdminNotFoundException(NOT_FOUND));
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ApplicationNotFoundException());
+                .orElseThrow(() -> new ApplicationNotFoundException(NOT_FOUND));
 
         if (likeRepository.existsByAdminAndApplication(admin, application)) {
-            throw new LikeAlreadyExistsException();
+            throw new LikeAlreadyExistsException(RESOURCE_CONFLICT);
         }
 
         Like like = Like.builder()

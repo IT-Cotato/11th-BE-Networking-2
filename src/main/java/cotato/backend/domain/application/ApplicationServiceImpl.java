@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
+import static cotato.backend.common.exception.ErrorCode.INVALID_PARAMETER;
+import static cotato.backend.common.exception.ErrorCode.NOT_FOUND;
+
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +41,7 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Transactional
     public ApplicationResponse getApplicationById(Long applicationId)  {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ApplicationNotFoundException());
+                .orElseThrow(() -> new ApplicationNotFoundException(NOT_FOUND));
         return ApplicationResponse.from(application);
     }
 
@@ -46,20 +49,20 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Transactional
     public int getLikeCount(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ApplicationNotFoundException());
+                .orElseThrow(() -> new ApplicationNotFoundException(NOT_FOUND));
         return application.getLikeCount();
     }
 
     @Override
     public ApplicationLikeDetailsResponse getApplicationLikeDetails(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new ApplicationNotFoundException());
+                .orElseThrow(() -> new ApplicationNotFoundException(NOT_FOUND));
         return new ApplicationLikeDetailsResponse(application.getId(), application.getLikedAdmins(), application.getLikeCount());
     }
 
     public ApplicationPagedResponse getApplications(int page, int size, String sortBy) {
         if (!Set.of("submittedAt", "submittedAt_desc", "like", "participation", "growth").contains(sortBy)) {
-            throw new InvalidSortOptionException();
+            throw new InvalidSortOptionException(INVALID_PARAMETER);
         }
         Sort sort = switch (sortBy) {
             // 지원 시간 오래된 순

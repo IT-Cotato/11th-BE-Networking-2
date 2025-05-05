@@ -1,6 +1,6 @@
 package cotato.backend.api.controller;
 
-import cotato.backend.common.dto.SuccessResponse;
+import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.applicant.dto.ApplicantDto;
 import cotato.backend.domain.application.ApplicationService;
 import cotato.backend.domain.application.dto.*;
@@ -20,7 +20,7 @@ public class ApplicationController {
     private final LikeService likeService;
 
 	@PostMapping
-	public ResponseEntity<SuccessResponse<Long>> save(@RequestBody CreateApplicationRequestDto req) {
+	public ResponseEntity<DataResponse<Long>> save(@RequestBody CreateApplicationRequestDto req) {
         ApplicantDto applicantDto = new ApplicantDto(
                 req.name(),
                 req.age(),
@@ -33,40 +33,40 @@ public class ApplicationController {
                 req.growth()
         );
         Long save = applicationService.save(applicantDto, applicationDto);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"지원서 저장 성공", save));
+        return ResponseEntity.ok(DataResponse.created(save));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SuccessResponse<ApplicationResponse>> getApplicationById(@PathVariable("id") Long id) {
+    public ResponseEntity<DataResponse<ApplicationResponse>> getApplicationById(@PathVariable("id") Long id) {
         ApplicationResponse applicationById = applicationService.getApplicationById(id);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"지원서 조회 성공", applicationById));
+        return ResponseEntity.ok(DataResponse.from(applicationById));
     }
 
 
     @PostMapping("/{applicationId}/like")
-    public ResponseEntity<SuccessResponse<Integer>> addLike(@PathVariable("applicationId") Long applicationId, @RequestParam("adminId") Long adminId) {
+    public ResponseEntity<DataResponse<Integer>> addLike(@PathVariable("applicationId") Long applicationId, @RequestParam("adminId") Long adminId) {
         likeService.addLike(adminId, applicationId);
         int likeCount = applicationService.getApplicationById(applicationId).like();
-        return ResponseEntity.ok(new SuccessResponse<>(200,"지원서 좋아요 성공", likeCount));
+        return ResponseEntity.ok(DataResponse.created(likeCount));
     }
 
     @GetMapping("/{applicationId}/like-details")
-    public ResponseEntity<SuccessResponse<ApplicationLikeDetailsResponse>> getApplicationLikeDetails(@PathVariable("applicationId") Long applicationId) {
+    public ResponseEntity<DataResponse<ApplicationLikeDetailsResponse>> getApplicationLikeDetails(@PathVariable("applicationId") Long applicationId) {
         ApplicationLikeDetailsResponse applicationLikeDetails = applicationService.getApplicationLikeDetails(applicationId);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"지원서 좋아요 상세 정보 조회 성공", applicationLikeDetails));
+        return ResponseEntity.ok(DataResponse.from(applicationLikeDetails));
     }
 
 
 
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<ApplicationPagedResponse>> getApplications(
+    public ResponseEntity<DataResponse<ApplicationPagedResponse>> getApplications(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "3") int size,
             @RequestParam(name = "sortBy", defaultValue = "submittedAt") String sortBy
     ) {
         ApplicationPagedResponse applications = applicationService.getApplications(page, size, sortBy);
-        return ResponseEntity.ok(new SuccessResponse<>(200,"지원서 페이징 성공", applications));
+        return ResponseEntity.ok(DataResponse.from(applications));
 
     }
 

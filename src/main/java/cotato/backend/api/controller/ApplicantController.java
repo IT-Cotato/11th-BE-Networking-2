@@ -1,6 +1,6 @@
 package cotato.backend.api.controller;
 
-import cotato.backend.common.dto.SuccessResponse;
+import cotato.backend.common.dto.DataResponse;
 import cotato.backend.domain.applicant.Applicant;
 import cotato.backend.domain.applicant.ApplicantService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ import java.util.List;
 public class ApplicantController {
     private final ApplicantService applicantService;
     @GetMapping
-    public ResponseEntity<SuccessResponse<List<Applicant>>> getAllApplicants() {
+    public ResponseEntity<DataResponse<List<Applicant>>> getAllApplicants() {
         List<Applicant> allApplicants = applicantService.getAllApplicants();
-        return ResponseEntity.ok(new SuccessResponse<>(200,"모든 지원자 조회 성공", allApplicants));
+        return ResponseEntity.ok(DataResponse.from(allApplicants));
     }
 }
