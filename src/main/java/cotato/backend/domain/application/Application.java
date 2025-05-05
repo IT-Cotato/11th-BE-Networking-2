@@ -1,0 +1,92 @@
+package cotato.backend.domain.application;
+
+import cotato.backend.common.exception.InvalidGenerationException;
+import cotato.backend.common.exception.InvalidGrowthException;
+import cotato.backend.common.exception.InvalidParticipationException;
+import cotato.backend.domain.admin.Admin;
+import cotato.backend.domain.applicant.Applicant;
+import cotato.backend.domain.application.enums.Part;
+import cotato.backend.domain.like.Like;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static cotato.backend.common.exception.ErrorCode.INVALID_PARAMETER;
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="application")
+public class Application {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "application_id")
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "applicant_id", nullable = false)
+    private Applicant applicant;
+
+    @Column(name = "application_generation")
+    private int generation;
+
+    @Column(name = "application_part")
+    private Part part;
+
+    @Column(name = "application_participation")
+    private int participation;
+
+    @Column(name = "application_growth")
+    private int growth;
+
+    @Column(name = "application_submittedAt")
+    private LocalDateTime submittedAt;
+
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
+
+    @Builder
+    public Application(Applicant applicant, int generation, Part part, int participation, int growth) {
+        validateGeneration(generation);
+        validateParticipation(participation);
+        validateGrowth(growth);
+
+        this.applicant = applicant;
+        this.generation = generation;
+        this.part = part;
+        this.participation = participation;
+        this.growth = growth;
+        this.submittedAt = LocalDateTime.now();
+    }
+
+    private void validateGeneration(int generation) {
+        if (generation < 1) {
+            throw new InvalidGenerationException(INVALID_PARAMETER);
+        }
+    }
+
+    private void validateParticipation(int participation) {
+        if (participation < 0 || participation > 10) {
+            throw new InvalidParticipationException(INVALID_PARAMETER);
+        }
+    }
+
+    private void validateGrowth(int growth) {
+        if (growth < 0 || growth > 10) {
+            throw new InvalidGrowthException(INVALID_PARAMETER);
+        }
+    }
+
+    public int getLikeCount() {
+        return likes.size();
+    }
+
+    public List<Admin> getLikedAdmins() {
+        return likes.stream()
+                .map(Like::getAdmin)
+                .toList();
+    }
+}

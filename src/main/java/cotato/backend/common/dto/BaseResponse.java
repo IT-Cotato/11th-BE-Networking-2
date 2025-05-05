@@ -11,12 +11,12 @@ import lombok.Getter;
 @Getter
 public abstract class BaseResponse {
 
-	private final String status;
+    private final String status;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	private final LocalDateTime timestamp = LocalDateTime.now();
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private final LocalDateTime timestamp = LocalDateTime.now();
 
-	protected BaseResponse(HttpStatus status) {
-		this.status = status.getReasonPhrase();
-	}
+    protected BaseResponse(HttpStatus status) {
+        this.status = status.getReasonPhrase();
+    }
 }
