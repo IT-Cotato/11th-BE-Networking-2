@@ -4,10 +4,10 @@ spring:
 
 
   datasource:
-    url: jdbc:mysql://34.219.227.44:3306/cotato
-    username: cotato_user
-    password: your-password
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/cotato
+    username: ${DB_USER}
+    password: ${DB_PASS}
+
 
 
 
